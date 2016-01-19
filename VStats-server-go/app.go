@@ -17,6 +17,7 @@ func main() {
 
 	router.HandleFunc("/pull", handleGetJSON)
 	router.HandleFunc("/push", handlePostJSON)
+	router.HandleFunc("/dummy", handleGetDummyJSON)
 	router.HandleFunc("/", handleIndex)
 
 	http.Handle("/", router)
@@ -27,7 +28,7 @@ func main() {
 
 func printCredits() {
 	fmt.Println("VStats web server by libertylocked")
-	fmt.Println("To pull the JSON, use http://localhost:" + port + "/pull")
+	fmt.Println("To pull the JSON, use /pull handle")
 	fmt.Println("See README for details")
 	fmt.Println()
 }
