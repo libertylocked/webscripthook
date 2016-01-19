@@ -1,0 +1,15 @@
+<html>
+<head>
+<style>
+body {text-align:center;}
+</style>
+<title>VStats web server</title>
+</head>
+<body>
+<h1>VStats web server by libertylocked</h1>
+<h2>Select a skin to start</h2>
+{{ range $key, $value := . }}
+<li><a href='/skins/{{ $value.Name }}/'>{{ $value.Name }}</a></li>
+{{ end }}
+</body>
+</html>
