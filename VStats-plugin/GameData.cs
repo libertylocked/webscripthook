@@ -24,7 +24,6 @@ namespace VStats_plugin
         public Vector3 PlayerPos { get; set; }
         public string ZoneName { get; set; }
         public string StreetName { get; set; }
-        public bool IsInVehicle { get; set; }
 
         // Weapons
         public string WeaponName { get; set; }
@@ -55,7 +54,6 @@ namespace VStats_plugin
             dat.PlayerPos = Game.Player.Character.Position;
             dat.ZoneName = World.GetZoneName(Game.Player.Character.Position);
             dat.StreetName = World.GetStreetName(Game.Player.Character.Position);
-            dat.IsInVehicle = Game.Player.Character.IsInVehicle();
 
             // Weapons
             dat.WeaponName = Enum.GetName(typeof(WeaponHash), Game.Player.Character.Weapons.Current.Hash);
