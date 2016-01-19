@@ -15,6 +15,7 @@ namespace VStats_plugin
         public TimeSpan GameTime { get; set; }
         public float FPS { get; set; }
         public string RadioStation { get; set; }
+        public string Weather { get; set; }
 
         // Player
         public int WantedLevel { get; set; }
@@ -36,6 +37,7 @@ namespace VStats_plugin
         public float VehicleSpeed { get; set; }
         public float VehicleRPM { get; set; }
         public string VehicleLicense { get; set; }
+        public string VehicleType { get; set; }
 
         public static GameData GetData()
         {
@@ -45,6 +47,7 @@ namespace VStats_plugin
             dat.GameTime = World.CurrentDayTime;
             dat.FPS = Game.FPS;
             dat.RadioStation = Game.RadioStation.ToString();
+            dat.Weather = WorldHelper.GetWeather().ToString();
 
             // Player
             dat.WantedLevel = Game.Player.WantedLevel;
@@ -69,6 +72,7 @@ namespace VStats_plugin
                 dat.VehicleSpeed = veh.Speed;
                 dat.VehicleRPM = veh.CurrentRPM;
                 dat.VehicleLicense = veh.NumberPlate;
+                dat.VehicleType = WorldHelper.GetVehicleType(veh);
             }
             
             
