@@ -184,3 +184,6 @@ FakesAssemblies/
 
 # Xamarin Studio files
 *.userprefs
+
+# Project specific files
+/VStats-server-go/*.exe
