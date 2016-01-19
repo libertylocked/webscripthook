@@ -58,10 +58,10 @@ namespace VStats_plugin
                         client.UploadValues(url, values);
                     }
                 }
-                catch 
+                catch
                 {
-                    //Thread.Sleep(100);
-                    throw new Exception(url);
+                    Thread.Sleep(100);
+                    //throw;
                 }
                 isStopped = true;
             }
