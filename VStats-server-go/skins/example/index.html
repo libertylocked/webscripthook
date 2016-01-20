@@ -1,12 +1,69 @@
 <html>
 <head>
   <title>Example skin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--jQuery and Bootstrap are already included in /static, so we just use that-->
+  <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/bootstrap/css/bootstrap-theme.min.css">
+  <script src="/static/jquery-1.11.3.min.js"></script>
+  <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+  <script>
+  $(document).ready(function(){
+    update();
+  });
+
+  function update() {
+    // Our AJAX call to get game statistics
+    $.get("/pull", callback);
+  }
+
+  function callback(data) {
+    if (data && data != "NO_DATA") {
+      // Parse the data string as a JSON object
+      var json = JSON.parse(data);
+      //console.log("Received: " + data);
+      // Update page content
+      $("#zoneName").text(json["ZoneName"]);
+      $("#streetName").text(json["StreetName"]);
+      $("#clock").text(json["GameTime"].substring(0, 5));
+      // Check if player is in vehicle
+      if (json["VehicleName"]) {
+        // Vehicle speed is in m/s, we need to convert to km/h
+        var speedMs = json["VehicleSpeed"];
+        $("#speedKph").text((speedMs / 1000 * 3600).toFixed() + " km/h");
+        $("#speedMph").text((speedMs * 2.2369363).toFixed() + " mph");
+      } else {
+        // Show player's health and armor when they are not in vehicle
+        $("#speedKph").text("Health: " + json["PlayerHealth"]);
+        $("#speedMph").text("Armor: " + json["PlayerArmor"]);
+      }
+    } else {
+      $("#zoneName").text("Not connected");
+    }
+    // Call update() again in 40ms to continue fetching
+    setTimeout(update, 40);
+  }
+  </script>
 </head>
 <body>
-  <h2>HOW TO MAKE YOUR OWN SKINS</h2>
-  <p>Create a folder under "skins" then put all your htmls, javascripts, css's, and all other assets there!</p>
-  <img src="go.png">
-  <p>To pull the json, GET from "/pull", like $.get("/pull", callback)</p>
-  <p>Get dummy json from "/dummmy"</p>
-</body>
-</html>
+  <div id="content" class="container" style="text-align: center;">
+    <h1 id="zoneName"></h1>
+    <h2 id="streetName"></h2>
+    <h2 id="clock"></h2>
+    <h1 id="speedKph"></h2>
+      <h3 id="speedMph"></h3>
+    </div>
+    <br><br>
+    <div id="buttons" class="container" style="text-align: center;">
+      <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#intro">Make your own skins</button>
+    </div>
+    <div id="intro" class="container collapse out" style="text-align: center;">
+      <h2>HOW TO MAKE YOUR OWN SKINS</h2>
+      <p>Create a folder under "skins" then put all your htmls, javascripts, css', and all other assets there!</p>
+      <!-- This little picture is our own asset-->
+      <img src="go.png">
+      <p>To pull the json, GET from "/pull", like $.get("/pull", callback)</p>
+      <p>Get dummy json from "/dummy"</p>
+    </div>
+  </body>
+  </html>

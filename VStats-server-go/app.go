@@ -16,11 +16,13 @@ func main() {
 	printCredits()
 
 	router.HandleFunc("/pull", handleGetJSON)
+	router.HandleFunc("/getTime", handleGetTimeReceived)
 	router.HandleFunc("/push", handlePostJSON)
 	router.HandleFunc("/dummy", handleGetDummyJSON)
 	router.HandleFunc("/", handleIndex)
 
 	http.Handle("/", router)
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	http.Handle("/skins/", http.StripPrefix("/skins/", http.FileServer(http.Dir("skins"))))
 	log.Println("Listening on port " + port)
 	http.ListenAndServe(":"+port, nil)
