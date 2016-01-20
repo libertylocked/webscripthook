@@ -72,7 +72,7 @@ namespace VStats_plugin
                 dat.VehicleSpeed = veh.Speed;
                 dat.VehicleRPM = veh.CurrentRPM;
                 dat.VehicleLicense = veh.NumberPlate;
-                dat.VehicleType = WorldHelper.GetVehicleType(veh);
+                dat.VehicleType = WorldHelper.GetVehicleClass(veh); //WorldHelper.GetVehicleType(veh);
             }
             
             

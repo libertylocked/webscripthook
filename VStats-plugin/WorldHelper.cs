@@ -29,6 +29,12 @@ namespace VStats_plugin
             return type;
         }
 
+        public static string GetVehicleClass(Vehicle veh)
+        {
+            int vehClass = Function.Call<int>(Hash.GET_VEHICLE_CLASS, veh.Handle);
+            return ((VehicleClass)vehClass).ToString();
+        }
+
         public static Weather GetWeather()
         {
             for (int i = 0; i < WeatherNames.Length; i++)
