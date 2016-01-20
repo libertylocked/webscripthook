@@ -12,7 +12,9 @@ Inspired by [ETS2 Telemetry Server](https://github.com/Funbit/ets2-telemetry-ser
 - You can really just extract the server files anywhere
 - Run "VStats-server-go.exe"
 - You need to allow the program to communicate through firewall
-- The default port is **25555**
+- The default port is **25555**. Can be changed in config (see **Other notes**).
+- Now open your browser and go to **http://localhost:25555** You should see the home page.
+- To access the page from devices on your LAN, replace "localhost" above with the address of your PC. Google ["How to find my LAN IP"](https://www.google.com/search?q=How%20to%20find%20my%20LAN%20IP) if you don't know how to do that.
 
 # Custom skins
 #### Apply a skin
