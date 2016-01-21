@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>Example skin</title>
+  <title>Simple Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!--jQuery and Bootstrap are already included in /static, so we just use that-->
   <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
@@ -23,22 +23,54 @@
       var json = JSON.parse(data);
       //console.log("Received: " + data);
       // Update page content
+      if (json["PlayerHealth"] <= 0) {
+        $("#playerHealth").text("WASTED!");
+      } else {
+        $("#playerHealth").text(json["PlayerHealth"] + "%");
+      }
+      $("#playerArmor").text(json["PlayerArmor"]);
+      $("#playerName").text(json["PlayerName"]);
+      $("#playerMoney").text(json["PlayerMoney"]);
+      $("#weaponName").text(json["WeaponName"]);
+      $("#weaponAmmo").text(json["WeaponAmmoInClip"] + " / " + json["WeaponAmmo"]);
+      wantedLevel = json["WantedLevel"];
+      $("#starsInactive").text("");
+      $("#starsActive").text("");
+      for (i = 0; i < 5 - wantedLevel; i++) {
+        $("#starsInactive").append("&#9733;");
+      }
+      for (i = 0; i < wantedLevel; i++) {
+        $("#starsActive").append("&#9734;");
+      }
+      $("#wantedLevel").text()
+      $("#pos").text("X: "+json["PlayerPos"]["X"].toFixed(1)+", Y:"+json["PlayerPos"]["Y"].toFixed(1)+", Z:" + json["PlayerPos"]["Z"].toFixed(1));
       $("#zoneName").text(json["ZoneName"]);
       $("#streetName").text(json["StreetName"]);
       $("#clock").text(json["GameTime"].substring(0, 5));
+      $("#weather").text(json["Weather"]);
+      $("#fps").text(Math.round(json["FPS"]));
+      $("#radio").text(json["RadioStation"]);
       // Check if player is in vehicle
       if (json["VehicleName"]) {
+        $("#vehName").text(json["VehicleName"]);
+        $("#vehType").text(json["VehicleType"]);
+        $("#vehLicense").text(json["VehicleLicense"]);
+        $("#engine").text(Math.round(json["VehicleEngineHealth"] / 10));
+        $("#petrol").text(Math.round(json["VehiclePetrolHealth"] / 10));
         // Vehicle speed is in m/s, we need to convert to km/h
         var speedMs = json["VehicleSpeed"];
         $("#speedKph").text((speedMs / 1000 * 3600).toFixed() + " km/h");
         $("#speedMph").text((speedMs * 2.2369363).toFixed() + " mph");
       } else {
-        // Show player's health and armor when they are not in vehicle
-        $("#speedKph").text("Health: " + json["PlayerHealth"]);
-        $("#speedMph").text("Armor: " + json["PlayerArmor"]);
+        $("#vehName").text("-");
+        $("#vehType").text("-");
+        $("#vehLicense").text("-");
+        $("#engine").text("-");
+        $("#petrol").text("-");
+        $("#vehRpm").text("-");
+        $("#speedKph").text("-");
+        $("#speedMph").text("-")
       }
-    } else {
-      $("#zoneName").text("Not connected");
     }
     // Call update() again in 40ms to continue fetching
     setTimeout(update, 40);
@@ -46,24 +78,59 @@
   </script>
 </head>
 <body>
-  <div id="content" class="container" style="text-align: center;">
-    <h1 id="zoneName"></h1>
-    <h2 id="streetName"></h2>
-    <h2 id="clock"></h2>
-    <h1 id="speedKph"></h2>
-      <h3 id="speedMph"></h3>
+  <div class="tab-content" style="text-align: center; min-height: 480px;">
+    <div class="container-fluid tab-pane active" id="tabChar">
+      <div class="container page-header" style="background-color: gray; color: white;">
+        <h1 id="playerName"></h1>
+      </div>
+      <h3>$<span id="playerMoney"></span></h3>
+      <h2 class="col-xs-6" style="color: green;"><span id="playerHealth"></span></h2>
+      <h2 class="col-xs-6" style="color: dodgerblue;"><span id="playerArmor"></span>%</h2>
+      <h2 id="weaponName"></h2>
+      <h3 id="weaponAmmo"></h3>
+      <h2><span id="starsInactive" style="color: lightgray;"></span><span id="starsActive"></span></h2>
+      <h3 id="pos"></h3>
     </div>
-    <br><br>
-    <div id="buttons" class="container" style="text-align: center;">
-      <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#intro">Make your own skins</button>
+    <div class="container-fluid tab-pane" id="tabVeh">
+      <div class="container page-header" style="background-color: gray; color: white;">
+        <h1 id="vehName" ></h1>
+      </div>
+      <h3 id="radio"></h3>
+      <h2 class="col-xs-6">Engine: <span id="engine"></span>%</h2>
+      <h2 class="col-xs-6">Gas Tank: <span id="petrol"></span>%</h2>
+      <h2 id="speedKph" class="col-xs-6"></h2>
+      <h2 id="speedMph" class="col-xs-6"></h2>
+      <h3 id="vehType" class="col-xs-6"></h2>
+      <h3 id="vehLicense" class="col-xs-6" style="background-color: black; color: yellow;"></h2>
     </div>
-    <div id="intro" class="container collapse out" style="text-align: center;">
-      <h2>HOW TO MAKE YOUR OWN SKINS</h2>
+    <div class="container-fluid tab-pane" id="tabWorld">
+      <h1 id="zoneName"></h1>
+      <h2 id="streetName"></h2>
+      <h3 id="weather" style="color: purple;"></h3>
+      <h2 id="clock"></h2>
+    </div>
+    <div class="container-fluid tab-pane" id="tabMisc">
+      <h1>FPS: <span id="fps"></span></h1>
+    </div>
+    <div class="container-fluid tab-pane" id="tabDiy">
+      <h1>HOW TO MAKE YOUR OWN SKINS</h1>
       <p>Create a folder under "skins" then put all your htmls, javascripts, css', and all other assets there!</p>
       <!-- This little picture is our own asset-->
       <img src="go.png">
-      <p>To pull the json, GET from "/pull", like $.get("/pull", callback)</p>
-      <p>Get dummy json from "/dummy"</p>
+      <p>To pull the json, GET from <a href="/pull">"/pull"</a>, like $.get("/pull", callback)</p>
+      <p>Get dummy json from <a href="/dummy">"/dummy"</a></p>
     </div>
+  </div>
+  <div class="container">
+    <ul class="nav nav-pills nav-justified">
+      <li class="active"><a href="#tabChar" data-toggle="tab">Character</a></li>
+      <li><a href="#tabVeh" data-toggle="tab">Vehicle</a></li>
+      <li><a href="#tabWorld" data-toggle="tab">World</a></li>
+      <li><a href="#tabMisc" data-toggle="tab">Misc</a></li>
+      <li><a href="#tabDiy" data-toggle="tab">Make your own skins</a></li>
+    </ul>
+    <h3>Simple Dashboard by libertylocked</h3>
+  </div>
+
   </body>
   </html>
