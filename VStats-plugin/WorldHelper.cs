@@ -13,22 +13,6 @@ namespace VStats_plugin
     {
         static String[] WeatherNames = { "EXTRASUNNY", "CLEAR", "CLOUDS", "SMOG", "FOGGY", "OVERCAST", "RAIN", "THUNDER", "CLEARING", "NEUTRAL", "SNOW", "BLIZZARD", "SNOWLIGHT", "XMAS" };
 
-        public static string GetVehicleType(Vehicle veh)
-        {
-            var type = "";
-            if (veh.Model.IsBicycle) type = "Bicycle";
-            else if (veh.Model.IsBike) type = "Bike";
-            else if (veh.Model.IsBoat) type = "Boat";
-            else if (veh.Model.IsCar) type = "Car";
-            else if (veh.Model.IsHelicopter) type = "Helicopter";
-            else if (veh.Model.IsPed) type = "Ped";
-            else if (veh.Model.IsPlane) type = "Plane";
-            else if (veh.Model.IsQuadbike) type = "Quadbike";
-            else if (veh.Model.IsTrain) type = "Train";
-
-            return type;
-        }
-
         public static string GetVehicleClass(Vehicle veh)
         {
             int vehClass = Function.Call<int>(Hash.GET_VEHICLE_CLASS, veh.Handle);
