@@ -26,7 +26,10 @@ func handleGetTimeReceived(w http.ResponseWriter, r *http.Request) {
 
 func handleGetDummyJSON(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	renderTemplate(w, "dummy.json", nil)
+	data := map[string]string{
+		"time": time.Now().Format("15:04:05"),
+	}
+	renderTemplate(w, "dummy.json", data)
 }
 
 func handlePostJSON(w http.ResponseWriter, r *http.Request) {
