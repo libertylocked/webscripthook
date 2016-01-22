@@ -13,6 +13,10 @@
   $(document).ready(function(){
     $("#radioPrevButton").click(radioPrev);
     $("#radioNextButton").click(radioNext);
+    $("#radioMirrorPark").click(radioMirrorPark);
+    $("#radioSelf").click(radioSelf);
+    $("#radioLab").click(radioLab);
+    $("#radioRock").click(radioRock);
     $("#fixBtn").click(fixCar);
     $("#clearWantedBtn").click(zeroStars);
     $("#maxWantedBtn").click(fiveStars);
@@ -128,7 +132,13 @@
       <h2 id="speedKph" class="col-xs-6"></h2>
       <h2 id="speedMph" class="col-xs-6"></h2>
       <h3 id="vehType" class="col-xs-6"></h2>
-      <h3 id="vehLicense" class="col-xs-6" style="background-color: black; color: yellow;"></h2>
+      <h3 id="vehLicense" class="col-xs-6" style="background-color: black; color: yellow;"></h3>
+      <div class="container" id="quickDial">
+        <button class="btn btn-sm btn-primary" id="radioMirrorPark">Radio Mirror Park</button>
+        <button class="btn btn-sm btn-primary" id="radioSelf">Self Radio</button>
+        <button class="btn btn-sm btn-primary" id="radioLab">The Lab</button>
+        <button class="btn btn-sm btn-primary" id="radioRock">LS Rock Radio</button>
+      </div>
     </div>
     <div class="container-fluid tab-pane" id="tabWorld">
       <h1 id="zoneName"></h1>

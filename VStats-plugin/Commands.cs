@@ -22,14 +22,30 @@ namespace VStats_plugin
             {
                 increment = -1;
             }
-            if (Game.RadioStation == RadioStation.LosSantosRockRadio && increment == -1) Game.RadioStation = RadioStation.SelfRadio;
-            else if (Game.RadioStation == RadioStation.SelfRadio && increment == 1) Game.RadioStation = RadioStation.LosSantosRockRadio;
+            if (Game.RadioStation == RadioStation.LosSantosRockRadio && increment == -1)
+            {
+                // TODO: Fix tuning to self radio
+                Game.RadioStation = RadioStation.VinewoodBoulevardRadio;
+            }
+            else if (Game.RadioStation == RadioStation.SelfRadio && increment == 1)
+            {
+                Game.RadioStation = RadioStation.LosSantosRockRadio;
+            }
             else
             {
                 var radioStations = Enum.GetValues(typeof(RadioStation));
                 var newIndex = (Array.IndexOf(radioStations, Game.RadioStation) + increment) % radioStations.Length;
                 var newStation = (RadioStation)(radioStations.GetValue(newIndex));
                 Game.RadioStation = newStation;
+            }
+        }
+
+        public static void RadioTo(string arg)
+        {
+            RadioStation station;
+            if (Enum.TryParse<RadioStation>(arg, out station))
+            {
+                Game.RadioStation = station;
             }
         }
 

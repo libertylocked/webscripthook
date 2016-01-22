@@ -4,6 +4,18 @@ function radioPrev() {
 function radioNext() {
   sendToGame("Radio", "1");
 }
+function radioMirrorPark() {
+  sendToGame("RadioTo", "RadioMirrorPark");
+}
+function radioSelf() {
+  sendToGame("RadioTo", "SelfRadio");
+}
+function radioLab() {
+  sendToGame("RadioTo", "TheLab");
+}
+function radioRock() {
+  sendToGame("RadioTo", "LosSantosRockRadio");
+}
 function fixCar() {
   sendToGame("Repair", "");
 }

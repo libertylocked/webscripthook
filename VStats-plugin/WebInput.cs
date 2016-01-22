@@ -33,6 +33,8 @@ namespace VStats_plugin
             {
                 case "radio":
                     return Commands.Radio;
+                case "radioto":
+                    return Commands.RadioTo;
                 case "repair":
                     return Commands.FixPlayerVehicle;
                 case "wantedlevel":
