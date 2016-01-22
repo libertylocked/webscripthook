@@ -13,6 +13,25 @@
   $(document).ready(function(){
     $("#radioPrevButton").click(radioPrev);
     $("#radioNextButton").click(radioNext);
+    $("#fixBtn").click(fixCar);
+    $("#clearWantedBtn").click(zeroStars);
+    $("#maxWantedBtn").click(fiveStars);
+    $("#maxHealthBtn").click(fullHealth);
+    $("#maxArmorBtn").click(fullArmor);
+    //$("#suicideBtn").click(suicide);
+    $("#blackOnBtn").click(blackoutOn);
+    $("#blackOffBtn").click(blackoutOff);
+    $("#morningBtn").click(setMorning);
+    $("#noonBtn").click(setNoon);
+    $("#nightBtn").click(setNight);
+    $("#sunnyBtn").click(setSunny);
+    $("#rainBtn").click(setRain);
+    $("#thunderBtn").click(setThunderStorm);
+    $("#blizzardBtn").click(setBlizzard);
+    $("#maxAmmoBtn").click(maxAmmo);
+    $("#t20Btn").click(spawnT20);
+    $("#buzzardBtn").click(spawnBuzzard);
+
     update();
   });
 
@@ -119,6 +138,41 @@
     </div>
     <div class="container-fluid tab-pane" id="tabMisc">
       <h1>FPS: <span id="fps"></span></h1>
+      <div class="container">
+        <button class="btn btn-lg btn-primary" id="fixBtn">Fix my ride</button>
+        <button class="btn btn-lg btn-primary" id="clearWantedBtn">Clear wanted</button>
+        <button class="btn btn-lg btn-primary" id="maxWantedBtn">Max wanted</button>
+        <button class="btn btn-lg btn-primary" id="maxAmmoBtn">Max ammo current gun</button>
+      </div>
+      <br>
+      <div class="container">
+        <button class="btn btn-lg btn-primary" id="maxHealthBtn">Max health</button>
+        <button class="btn btn-lg btn-primary" id="maxArmorBtn">Max armor</button>
+        <!--button class="btn btn-lg btn-primary" id="suicideBtn">Suicide</button-->
+      </div>
+      <br>
+      <div class="container">
+        <button class="btn btn-lg btn-primary" id="morningBtn">Set morning</button>
+        <button class="btn btn-lg btn-primary" id="noonBtn">Set noon</button>
+        <button class="btn btn-lg btn-primary" id="nightBtn">Set night</button>
+      </div>
+      <br>
+      <div class="container">
+        <button class="btn btn-lg btn-primary" id="sunnyBtn">Sunny</button>
+        <button class="btn btn-lg btn-primary" id="rainBtn">Raining</button>
+        <button class="btn btn-lg btn-primary" id="thunderBtn">Thunderstorm</button>
+        <button class="btn btn-lg btn-primary" id="blizzardBtn">Blizzard</button>
+      </div>
+      <br>
+      <div class="container">
+        <button class="btn btn-lg btn-primary" id="t20Btn">Spawn T20</button>
+        <button class="btn btn-lg btn-primary" id="buzzardBtn">Spawn Buzzard</button>
+      </div>
+      <br>
+      <div class="container">
+        <button class="btn btn-lg btn-primary" id="blackOnBtn">Turn ON blackout</button>
+        <button class="btn btn-lg btn-primary" id="blackOffBtn">Turn OFF blackout</button>
+      </div>
     </div>
     <div class="container-fluid tab-pane" id="tabDiy">
       <h1>HOW TO MAKE YOUR OWN SKINS</h1>
@@ -127,6 +181,7 @@
       <img src="go.png">
       <p>To pull the json, GET from <a href="/pull">"/pull"</a>, like $.get("/pull", callback)</p>
       <p>Get dummy json from <a href="/dummy">"/dummy"</a></p>
+      <h2>For more info, visit the repo's <a href="https://github.com/LibertyLocked/VStats/wiki">wiki page</a></h2>
     </div>
   </div>
   <div class="container">

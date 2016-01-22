@@ -29,37 +29,30 @@ namespace VStats_plugin
 
         private WebFunction GetFunction(string funcStr)
         {
-            switch (funcStr)
+            switch (funcStr.ToLower())
             {
-                case "Radio":
+                case "radio":
                     return Commands.Radio;
+                case "repair":
+                    return Commands.FixPlayerVehicle;
+                case "wantedlevel":
+                    return Commands.SetWantedLevel;
+                case "health":
+                    return Commands.SetPlayerHealth;
+                case "armor":
+                    return Commands.SetPlayerArmor;
+                case "blackout":
+                    return Commands.SetBlackout;
+                case "time":
+                    return Commands.ChangeTime;
+                case "weather":
+                    return Commands.ChangeWeather;
+                case "maxammo":
+                    return Commands.MaxAmmo;
+                case "spawnvehicle":
+                    return Commands.SpawnVehicle;
                 default:
                     return null;
-            }
-        }
-    }
-
-    class Commands
-    {
-        public static void Radio(string tuneTo)
-        {
-            int increment;
-            if (tuneTo == "1")
-            {
-                increment = 1;
-            }
-            else
-            {
-                increment = -1;
-            }
-            if (Game.RadioStation == RadioStation.LosSantosRockRadio && increment == -1) Game.RadioStation = RadioStation.SelfRadio;
-            else if (Game.RadioStation == RadioStation.SelfRadio && increment == 1) Game.RadioStation = RadioStation.LosSantosRockRadio;
-            else
-            {
-                var radioStations = Enum.GetValues(typeof(RadioStation));
-                var newIndex = (Array.IndexOf(radioStations, Game.RadioStation) + increment) % radioStations.Length;
-                var newStation = (RadioStation)(radioStations.GetValue(newIndex));
-                Game.RadioStation = newStation;
             }
         }
     }
