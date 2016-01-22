@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -16,19 +18,24 @@ namespace VStats_plugin
     class MainScript : Script
     {
         private readonly string url;
+        private readonly int sleepTime;
 
         //private SemaphoreSlim PostDataSemaphore = new SemaphoreSlim(1, 1);
         Object lockThis = new Object();
         bool isStopped;
         GameData cacheData;
+        ConcurrentQueue<WebInput> inputQueue;
 
         public MainScript()
         {
             // SETUP
             var settings = ScriptSettings.Load(@".\scripts\VStats-plugin.ini");
             string port = settings.GetValue("Core", "PORT", "8080");
+            int interval = settings.GetValue("Core", "INTERVAL", 10);
             url = "http://localhost:" + port + "/push";
+            sleepTime = interval;
 
+            this.inputQueue = new ConcurrentQueue<WebInput>();
             this.isStopped = true;
             this.Tick += OnTick;
         }
@@ -41,7 +48,20 @@ namespace VStats_plugin
                 workerThread.Start();
             }
             cacheData = GameData.GetData();
-            //ThreadProc_PostJSON();
+            
+            // Check for inputs
+            WebInput input;
+            if (inputQueue.TryDequeue(out input))
+            {
+                try
+                {
+                    input.Execute();
+                }
+                catch
+                {
+                    UI.Notify("VStats func failed: " + input.Cmd + " " + input.Arg);
+                }
+            }
         }
 
         private void ThreadProc_PostJSON()
@@ -49,21 +69,31 @@ namespace VStats_plugin
             lock (lockThis)
             {
                 isStopped = false;
-                try
+                while (true)
                 {
-                    using (var client = new WebClient())
+                    try
                     {
-                        var values = new NameValueCollection();
-                        values["d"] = JsonConvert.SerializeObject(cacheData);
-                        client.UploadValues(url, values);
+                        using (var client = new WebClient())
+                        {
+                            var values = new NameValueCollection();
+                            values["d"] = JsonConvert.SerializeObject(cacheData);
+                            var response = client.UploadValues(url, values);
+                            // Read response
+                            if (response != null && response.Length > 0)
+                            {
+                                WebInput input = JsonConvert.DeserializeObject<WebInput>(Encoding.ASCII.GetString(response));
+                                if (input != null) inputQueue.Enqueue(input);
+                            }
+                        }
                     }
+                    catch
+                    {
+                        Thread.Sleep(100);
+                        //throw;
+                    }
+                    Thread.Sleep(sleepTime);
                 }
-                catch
-                {
-                    Thread.Sleep(100);
-                    //throw;
-                }
-                isStopped = true;
+                //isStopped = true;
             }
         }
     }

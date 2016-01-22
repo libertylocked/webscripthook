@@ -19,6 +19,7 @@ func main() {
 	router.HandleFunc("/getTime", handleGetTimeReceived)
 	router.HandleFunc("/push", handlePostJSON)
 	router.HandleFunc("/dummy", handleGetDummyJSON)
+	router.HandleFunc("/input", handlePostInput)
 	router.HandleFunc("/", handleIndex)
 
 	http.Handle("/", router)

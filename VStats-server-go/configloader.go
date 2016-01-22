@@ -15,8 +15,8 @@ func getPort() string {
 	fmt.Println(cfgStr)
 	cfg := struct {
 		Core struct {
-			HOST string
-			PORT string
+			PORT     string
+			INTERVAL string
 		}
 	}{}
 	err := gcfg.ReadStringInto(&cfg, cfgStr)

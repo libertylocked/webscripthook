@@ -1,14 +1,18 @@
 <html>
 <head>
   <title>Simple Dashboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
   <!--jQuery and Bootstrap are already included in /static, so we just use that-->
   <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="/static/bootstrap/css/bootstrap-theme.min.css">
   <script src="/static/jquery-1.11.3.min.js"></script>
   <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+
+  <script src="sendinputs.js"></script>
   <script>
   $(document).ready(function(){
+    $("#radioPrevButton").click(radioPrev);
+    $("#radioNextButton").click(radioNext);
     update();
   });
 
@@ -95,7 +99,11 @@
       <div class="container page-header" style="background-color: gray; color: white;">
         <h1 id="vehName" ></h1>
       </div>
-      <h3 id="radio"></h3>
+      <h3>
+      <span class="col-xs-3" style="text-align: right;" id="radioPrevButton"><img src="chevron-left.svg" height=30 alt="<<"></span>
+      <span class="col-xs-6" id="radio"></span>
+      <span class="col-xs-3" style="text-align: left;" id="radioNextButton"><img src="chevron-right.svg" height=30 alt=">>"></span>
+      </h3>
       <h2 class="col-xs-6">Engine: <span id="engine"></span>%</h2>
       <h2 class="col-xs-6">Gas Tank: <span id="petrol"></span>%</h2>
       <h2 id="speedKph" class="col-xs-6"></h2>
