@@ -27,6 +27,7 @@ Inspired by [ETS2 Telemetry Server](https://github.com/Funbit/ets2-telemetry-ser
 - Get game data from "/pull"
 - Get last updated time from "/getTime"
 - You can also get a dummy data from "/dummy" for testing purposes
+- You can send certain inputs to the game. See [this wiki page](https://github.com/LibertyLocked/VStats/wiki/Send-inputs-using-POST) for details
 
 # Other notes
 - Whether you start the game first or the server first does not matter
