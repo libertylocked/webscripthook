@@ -58,7 +58,6 @@
     <Compile Include="MainScript.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VehicleClass.cs" />
-    <Compile Include="WeaponHash.cs" />
     <Compile Include="WorldHelper.cs" />
   </ItemGroup>
   <ItemGroup>

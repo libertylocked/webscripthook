@@ -50,7 +50,7 @@ namespace VStats_plugin
             dat.GameTime = World.CurrentDayTime;
             dat.FPS = Game.FPS;
             dat.RadioStation = Game.RadioStation.ToString();
-            dat.Weather = WorldHelper.GetWeather().ToString();
+            dat.Weather = World.Weather.ToString();
 
             // Player
             dat.WantedLevel = Game.Player.WantedLevel;
@@ -76,7 +76,7 @@ namespace VStats_plugin
                 dat.VehicleSpeed = veh.Speed;
                 dat.VehicleRPM = veh.CurrentRPM;
                 dat.VehicleLicense = veh.NumberPlate;
-                dat.VehicleType = WorldHelper.GetVehicleClass(veh);
+                dat.VehicleType = veh.ClassType.ToString();
                 dat.VehicleEngineHealth = veh.EngineHealth;
                 dat.VehiclePetrolHealth = veh.PetrolTankHealth;
             }
