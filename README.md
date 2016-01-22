@@ -35,6 +35,10 @@ Inspired by [ETS2 Telemetry Server](https://github.com/Funbit/ets2-telemetry-ser
 - If things broke, check "GTAV/ScriptHookVDotNet-2016-01-19.log" (replace the date with your current date) for errors
 
 # Screenshots
-<img src="/Images/example.PNG" width="160">
+<img src="/Images/example0.png" width="160">
+<img src="/Images/example1.png" width="160">
+<img src="/Images/example2.png" width="160">
+<img src="/Images/example3.png" width="160">
+<img src="/Images/example4.png" width="160">
 
 > Have fun making your own skins! <img src="https://github.com/favicon.ico" width="32"> Pull requests are welcome
