@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using GTA;
 using GTA.Math;
 using GTA.Native;
+using Newtonsoft.Json;
 
 namespace VStats_plugin
 {
@@ -124,6 +125,20 @@ namespace VStats_plugin
             {
                 World.CreateVehicle(new Model(vehHash), Game.Player.Character.Position + Game.Player.Character.ForwardVector * 5);
             }
+        }
+
+        public static void SpawnPed(string arg)
+        {
+            PedHash pedHash;
+            if (Enum.TryParse<PedHash>(arg, out pedHash))
+            {
+                World.CreatePed(new Model(pedHash), Game.Player.Character.Position + Game.Player.Character.ForwardVector * 5);
+            }
+        }
+
+        public static void ShowSaveMenu(string arg)
+        {
+            Game.ShowSaveMenu();
         }
     }
 }

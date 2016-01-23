@@ -24,6 +24,8 @@ namespace VStats_plugin
             funcDict.Add("weather", Commands.ChangeWeather);
             funcDict.Add("maxammo", Commands.MaxAmmo);
             funcDict.Add("spawnvehicle", Commands.SpawnVehicle);
+            funcDict.Add("spawnped", Commands.SpawnPed);
+            funcDict.Add("showsavemenu", Commands.ShowSaveMenu);
         }
 
         /// <summary>
