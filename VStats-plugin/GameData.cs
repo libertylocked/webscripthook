@@ -55,7 +55,7 @@ namespace VStats_plugin
 
             // Player
             dat.WantedLevel = Game.Player.WantedLevel;
-            dat.PlayerHealth = Game.Player.Character.Health;
+            dat.PlayerHealth = Function.Call<int>(Hash.GET_ENTITY_HEALTH, Game.Player.Character.Handle) - 100;
             dat.PlayerArmor = Game.Player.Character.Armor;
             dat.PlayerMoney = Game.Player.Money;
             dat.PlayerPos = Game.Player.Character.Position;
