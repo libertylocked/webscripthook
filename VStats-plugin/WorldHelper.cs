@@ -33,6 +33,7 @@ namespace VStats_plugin
             {"RADIO_19_USER", "Self Radio"},
             {"RADIO_20_THELAB", "The Lab"},
             {"RADIO_OFF", "Radio Off"},
+            {"", "Radio Off"},
         };
 
         public static string GetRadioFriendlyName(string displayName)

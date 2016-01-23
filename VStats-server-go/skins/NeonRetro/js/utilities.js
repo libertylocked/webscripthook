@@ -10,25 +10,26 @@ var WEATHER_CACHE = [
     "Christmas"
 ];
 var RADIO_CACHE = {
-    "LosSantosRockRadio": [0, "Los Santos Rock Radio"],
-    "NonStopPopFM": [1, "Non-Stop-Pop FM"],
-    "RadioLosSantos": [2, "Radio Los Santos"],
-    "ChannelX": [3, "Channel X"],
-    "WestCoastTalkRadio": [4, "WCTR"],
-    "RebelRadio": [5, "Rebel Radio"],
-    "SoulwaxFM": [6, "Soulwax FM"],
-    "EastLosFM": [7, "East Los FM"],
-    "WestCoastClassics": [8, "West Coast Classics"],
-    "TheBlueArk": [9, "Blue Ark"],
-    "WorldWideFM": [10, "WorldWide FM"],
-    "FlyloFM": [11, "FlyLo FM"],
-    "TheLowdown": [12, "The Lowdown 91.1"],
-    "TheLab": [13, "The Lab"],
-    "RadioMirrorPark": [14, "Radio Mirror Park"],
-    "Space": [15, "Space 103.2"],
-    "VinewoodBoulevardRadio": [16, "Vinewood Boulevard Radio"],
-    "SelfRadio": [17, "Self Radio"],
-    "RadioOff": [18, "Radio Off"],
+    "Los Santos Rock Radio": [0, "Los Santos Rock Radio"],
+    "Non-Stop-Pop FM": [1, "Non-Stop-Pop FM"],
+    "Radio Los Santos": [2, "Radio Los Santos"],
+    "Channel X": [3, "Channel X"],
+    "West Coast Talk Radio": [4, "WCTR"],
+    "Rebel Radio": [5, "Rebel Radio"],
+    "Soulwax FM": [6, "Soulwax FM"],
+    "East Los FM": [7, "East Los FM"],
+    "West Coast Classics": [8, "West Coast Classics"],
+    "Blue Ark": [9, "Blue Ark"],
+    "Worldwide FM": [10, "WorldWide FM"],
+    "FlyLo FM": [11, "FlyLo FM"],
+    "The Lowdown 91.1": [12, "The Lowdown 91.1"],
+    "The Lab": [13, "The Lab"],
+    "Radio Mirror Park": [14, "Radio Mirror Park"],
+    "Space 103.2": [15, "Space 103.2"],
+    "Vinewood Boulevard Radio": [16, "Vinewood Boulevard Radio"],
+    "Self Radio": [17, "Self Radio"],
+    "Blaine County Radio" : [18, "Blaine County Radio"],
+    "Radio Off": [19, "Radio Off"],
 };
 var WEAPON_CACHE = {
     "Knife": [0, "Knife", "melee"],
@@ -67,7 +68,7 @@ var WEAPON_CACHE = {
     "Unarmed": [-1, "Unarmed", "melee"]
 }
 
-var STATION_COUNT = 19;
+var STATION_COUNT = 20;
 
 /*============================================================================*/
 
@@ -136,7 +137,7 @@ function getRadioStationIndex(delta) {
         return currIndex;
     } else {
         newIndex = currIndex + delta;
-        
+
         if(newIndex >= STATION_COUNT) {
             newIndex = newIndex - STATION_COUNT;
         } else if(newIndex < 0) {
@@ -168,7 +169,7 @@ function initDashboardWidgets() {
         $("#tab-vehicle").prop("disabled",true);
         setBackgroundColor("#tab-vehicle", "#bbbbbb");
     }
-    
+
 }
 
 function initPlayerWidgets() {
@@ -184,13 +185,14 @@ function setPlayerWeaponWidget() {
 
 function setWeaponName() {
     var weapKey = getWeaponName();
-    var weapName;
-    $.each(WEAPON_CACHE, function(key, value) {
-        if (key == weapKey) {
-            weapName = value[1];
-        }
-    });
-    $(".weapon-name").html(weapName);
+    // var weapName;
+    // $.each(WEAPON_CACHE, function(key, value) {
+    //     if (key == weapKey) {
+    //         weapName = value[1];
+    //     }
+    // });
+    // $(".weapon-name").html(weapName);
+    $(".weapon-name").html(weapKey);
 }
 
 function setWeaponAmmo() {
@@ -460,7 +462,7 @@ function setWeatherWidget() {
     if (index > -1) {
         $(".widget-weather").html("<br /><br /><br />" + currWeather);
     } else {
-        
+
     }
 }
 
@@ -486,5 +488,3 @@ function setBackgroundColor(elem, color) {
     // property.style.backgroundColor = color;
     $(elem).css("background-color", color);
 }
-
-
