@@ -23,6 +23,7 @@ namespace VStats_plugin
         public int PlayerArmor { get; set; }
         public int PlayerMoney { get; set; }
         public Vector3 PlayerPos { get; set; }
+        public float PlayerHeading { get; set; }
         public string PlayerName { get; set; }
         public string ZoneName { get; set; }
         public string StreetName { get; set; }
@@ -58,6 +59,7 @@ namespace VStats_plugin
             dat.PlayerArmor = Game.Player.Character.Armor;
             dat.PlayerMoney = Game.Player.Money;
             dat.PlayerPos = Game.Player.Character.Position;
+            dat.PlayerHeading = Game.Player.Character.Heading;
             dat.PlayerName = ((PedHash)Game.Player.Character.Model.Hash).ToString();
             dat.ZoneName = World.GetZoneName(Game.Player.Character.Position);
             dat.StreetName = World.GetStreetName(Game.Player.Character.Position);

@@ -9,8 +9,6 @@ using GTA.Native;
 
 namespace VStats_plugin
 {
-    delegate void WebFunction(string arg);
-
     class WebInput
     {
         public string Cmd { get; set; }
@@ -20,41 +18,10 @@ namespace VStats_plugin
         {
             if (string.IsNullOrEmpty(Cmd)) return;
 
-            WebFunction func = GetFunction(Cmd);
+            WebFunction func = FunctionConvert.GetFunction(Cmd);
             if (func != null)
             {
                 func(Arg);
-            }
-        }
-
-        private WebFunction GetFunction(string funcStr)
-        {
-            switch (funcStr.ToLower())
-            {
-                case "radio":
-                    return Commands.Radio;
-                case "radioto":
-                    return Commands.RadioTo;
-                case "repair":
-                    return Commands.FixPlayerVehicle;
-                case "wantedlevel":
-                    return Commands.SetWantedLevel;
-                case "health":
-                    return Commands.SetPlayerHealth;
-                case "armor":
-                    return Commands.SetPlayerArmor;
-                case "blackout":
-                    return Commands.SetBlackout;
-                case "time":
-                    return Commands.ChangeTime;
-                case "weather":
-                    return Commands.ChangeWeather;
-                case "maxammo":
-                    return Commands.MaxAmmo;
-                case "spawnvehicle":
-                    return Commands.SpawnVehicle;
-                default:
-                    return null;
             }
         }
     }

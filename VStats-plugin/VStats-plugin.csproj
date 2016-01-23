@@ -54,11 +54,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands.cs" />
+    <Compile Include="FunctionConvert.cs" />
+    <Compile Include="WebFunction.cs" />
     <Compile Include="WebInput.cs" />
     <Compile Include="GameData.cs" />
     <Compile Include="MainScript.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VehicleClass.cs" />
     <Compile Include="WorldHelper.cs" />
   </ItemGroup>
   <ItemGroup>

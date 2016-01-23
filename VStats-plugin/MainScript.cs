@@ -35,6 +35,7 @@ namespace VStats_plugin
             url = "http://localhost:" + port + "/push";
             sleepTime = interval;
 
+            FunctionConvert.Initialize();
             this.inputQueue = new ConcurrentQueue<WebInput>();
             this.isStopped = true;
             this.Tick += OnTick;
