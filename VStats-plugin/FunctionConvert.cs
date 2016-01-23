@@ -25,6 +25,7 @@ namespace VStats_plugin
             funcDict.Add("maxammo", Commands.MaxAmmo);
             funcDict.Add("spawnvehicle", Commands.SpawnVehicle);
             funcDict.Add("spawnped", Commands.SpawnPed);
+            funcDict.Add("giveweapon", Commands.GiveWeapon);
             funcDict.Add("showsavemenu", Commands.ShowSaveMenu);
         }
 

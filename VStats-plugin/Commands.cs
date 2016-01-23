@@ -136,6 +136,15 @@ namespace VStats_plugin
             }
         }
 
+        public static void GiveWeapon(string arg)
+        {
+            WeaponHash wepHash;
+            if (Enum.TryParse<WeaponHash>(arg, out wepHash))
+            {
+                Game.Player.Character.Weapons.Give(wepHash, 9999, true, true);
+            }
+        }
+
         public static void ShowSaveMenu(string arg)
         {
             Game.ShowSaveMenu();
