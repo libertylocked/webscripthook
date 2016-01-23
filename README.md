@@ -1,4 +1,6 @@
 # VStats plugin + server
+Created by libertylocked
+
 Real-time GTAV in-game data for your second screen experience. Includes server and plugin.
 Inspired by [ETS2 Telemetry Server](https://github.com/Funbit/ets2-telemetry-server)!
 
