@@ -43,4 +43,6 @@ Inspired by [ETS2 Telemetry Server](https://github.com/Funbit/ets2-telemetry-ser
 <img src="/Images/example3.png" width="360">
 <img src="/Images/example4.png" width="360">
 
+# Video
+[![Video1](http://img.youtube.com/vi/-LCbX3b3LsU/0.jpg)](http://www.youtube.com/watch?v=-LCbX3b3LsU)
 > Have fun making your own skins! <img src="https://github.com/favicon.ico" width="32"> Pull requests are welcome
