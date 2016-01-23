@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>VStats</title>
+    <meta name="viewport" content="width=700" />
+    <meta http-equiv="content-type" 
+            content="text/html;charset=utf-8" />
+    <link href="./css/style.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="./js/jquery-2.2.0.min.js"> </script>
+    <script type="text/javascript" src="./js/utilities.js"> </script>
+    <script type="text/javascript" src="./js/input.js"> </script>
+</head>
+<body>
+<div id="page-header" class="container"></div>
+<div id="pane-switcher" class="container">
+<button id="tab-dashboard" onclick="initDashboardWidgets();">Dashboard</button>
+<button id="tab-vehicle" onclick="initVehicleWidgets();">Vehicle</button>
+<button id="tab-player" onclick="initPlayerWidgets();">Player</button>
+
+</div>
+<br />
+<div id="pane-player" class="container">
+    <div class="widget-stats">
+        <div class="player-name">Name</div>
+        <div class="player-money">Money</div>
+        <div class="wanted-level">Wanted Level</div>
+        <br /><br />
+        <br /><br />
+    </div>
+    <div class="widget-weapon">
+        <div class="weapon-name">Weapon Name</div>
+        <br />
+        <div class="weapon-ammo">In Clip / Max Clip</div>
+    </div>
+    <br />
+    <div class="player-health">Health</div>
+    <div class="player-armor">Armor</div>
+</div>
+
+<div id="pane-vehicle" class="container">
+    <div  class="pane-left">
+        <div class="widget-radio">
+            <button class="station-next" onclick="radioNext();">&uArr;<br />Next<br /><br /></button>
+            <div class="station">Radio Station</div>
+            <button class="station-prev" onclick="radioPrev();"><br />Previous<br />&dArr;</button>
+        </div>
+    </div>
+    <div class="pane-center">
+        <br />
+        <div class="half-pane-left">
+            <div class="vehicle-health">
+                Vehicle Health
+            </div>
+        </div>
+        <div class="half-pane-right">
+            <div class="vehicle-petrol">
+                Vehicle Petrol
+            </div>
+        </div>
+        <br /><br /><br />
+        <div class="widget-spedometer">
+            <div class="velocity">Spedometer</div>
+            <button class="kph" onclick="convertToKPH();">KPH</button>
+            <button class="mph" onclick="convertToMPH();">MPH</button>
+            <br />
+        </div>
+        <br />
+        <div class="widget-location">Zone / Street</div>
+    </div>
+    <div class="pane-right">
+        <br /><br />
+        <div class="vehicle-name">Vehicle Name</div>
+        <br /><br />
+        <div class="vehicle-type">Vehicle Type</div>
+        <br ><br />
+        <div class="vehicle-plate">Vehicle Plate</div>
+    </div>
+</div>
+
+<div id="pane-dashboard" class="container">
+    <div  class="pane-left">
+        <div class="widget-radio">
+            <button class="station-next" onclick="radioNext();">&uArr;<br />Next<br /><br /></button>
+            <div class="station">Radio Station</div>
+            <button class="station-prev" onclick="radioPrev();"><br />Previous<br />&dArr;</button>
+        </div>
+    </div>
+    <div class="pane-center">
+        <div class="widget-clock">
+            <ul id="time">
+                <li id="hours">Hours</li>
+                <li id="point">:</li>
+                <li id="mins">Minutes</li>
+            </ul>
+        </div>
+        <br /><br />
+        <div class="widget-spedometer">
+            <div class="velocity">Spedometer</div>
+            <button class="kph" onclick="convertToKPH();">KPH</button>
+            <button class="mph" onclick="convertToMPH();">MPH</button>
+            <br />
+        </div>
+        <br />
+        <div class="widget-location">Zone / Street</div>
+    </div>
+    <div class="pane-right">
+        <br />
+        <div class="widget-weather" >Weather</div>
+    </div>
+</div>
+<br /><br /><br />
+<div class="container">Webpage made by <a href="https://github.com/Gannon93" target="_blank">Zach Gannon</a></div>
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+">
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+</form>
+
+</body>
+</html>
+

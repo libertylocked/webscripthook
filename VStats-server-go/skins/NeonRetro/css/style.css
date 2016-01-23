@@ -1,0 +1,208 @@
+
+
+body{
+    
+    background:#202020;
+    font:bold "Courier New", Helvetica, sans-serif;
+    font-size: 3vw;
+    margin:0;
+    padding:0;
+     
+    text-align:center;
+    font-family:Symbola, "Courier New", Helvetica, sans-serif;
+    color:#bbbbbb;
+    text-shadow:0 0 5px #00c6ff;
+}
+
+a { 
+    text-decoration:none; 
+    color:#00c6ff;
+}
+
+.container {
+    margin: 0 auto;
+    font-size: 3vw;
+    overflow: hidden;
+    border-width: 1px;
+    border-color: #bbbbbb;
+}
+.pane-center {
+    width: 50%;
+    font-size: 3vw;
+    overflow: hidden;
+    display: inline-block;
+    text-align: center;
+}
+.pane-left, .pane-right {
+    width: 25%;
+    float: left;
+    overflow: hidden;
+    text-align: center;
+}
+
+.pane-right {
+    float: right;
+}
+
+.half-pane-left, .half-pane-right {
+    width: 50%;
+    float: left;
+    overflow: hidden;
+    text-align: center;
+}
+
+.half-pane-right {
+    float: right;
+}
+
+
+.widget-clock {
+    width: 100%;
+    margin:0 auto;
+    text-align: center;
+}
+
+.widget-radio, .widget-weather {
+    font-size: 3vw;
+    margin: 0 auto;
+}
+
+.widget-spedometer {
+    width: 100%;
+    font-size: 8vw;
+    color: #FFFFFF;
+}
+
+.widget-stats {
+    float: left;
+    width: 66%;
+}
+
+.widget-weapon {
+    float: right;
+    width: 33%;
+}
+
+.widget-location {
+    text-align: center;
+    width: 100%;
+    font-size: 3vw;
+    color:#bbbbbb;
+    text-shadow:0 0 5px #00c6ff;
+}
+
+.player-health, .player-armor {
+    text-align::center;
+    width: 50%;
+    font-size: 3vw;
+    color:#bbbbbb;
+    text-shadow:0 0 5px #00c6ff;
+    float: left;
+}
+
+.player-armor {
+    float: right;
+}
+
+.player-name, .player-money, .wanted-level {
+    width: 100%;
+    text-align: left;
+    padding-left: 2vw;
+    color:#bbbbbb;
+    font-size: 3vw;
+    text-shadow:0 0 5px #00c6ff;
+}
+
+.station-next, .station-prev {
+    width: 90%;
+    min-width: 24px;
+    text-align: center;
+    background-color: #202020;
+    color:#bbbbbb;
+    text-shadow:0 0 5px #00c6ff;
+    border-width: 0;
+    font-size: 3vw;
+    font-family:Symbola, "Courier New", Helvetica, sans-serif;
+}
+
+.weapon-name, .weapon-ammo {
+    width: 100%;
+}
+
+button {
+    border: 2;
+    background-color: #202020;
+    color:#bbbbbb;
+    text-shadow:0 0 5px #00c6ff;
+    font-size: 3vw;
+    font-family: Symbola, "Courier New", Helvetica, sans-serif;
+}
+
+#tab-dashboard {
+    width: 33%;
+    float: left;
+}
+
+#tab-player {
+    width: 33%;
+    display: inline-block;
+}
+
+#tab-vehicle {
+    width: 33%;
+    float: right;
+}
+
+.kph, .mph {
+    width: 50%;
+    float: left;
+}
+
+.mph {
+    float: right;
+}
+
+ul {
+    width:100%;
+    margin:0 auto;
+    padding:0px;
+    list-style:none;
+    text-align:center;
+}
+ul li {
+    display:inline;
+    font-size: 4vw;
+    text-align: center;
+    font-family:Symbola, "Courier New", Helvetica, sans-serif;
+}
+
+*:focus {
+    outline: none;
+}
+
+.sliced {
+  position: relative;
+  width: 510px;
+  height: 255px;
+}
+img {
+    width: 90%;
+}
+.tile { 
+  float: left;
+  opacity: 1;
+  -webkit-transition: all .3s ease-in-out;
+  -moz-transition: all .3s ease-in-out;
+  -ms-transition: all .3s ease-in-out;
+  -o-transition: all .3s ease-in-out;
+}
+.tile-animated {
+  opacity: 0;
+}
+.css3-preload .sliced * {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -ms-transition: none !important;
+  -o-transition: none !important;
+  transition: none !important;
+}
