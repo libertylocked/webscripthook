@@ -43,11 +43,7 @@ namespace VStats_plugin
 
         public static void RadioTo(string arg)
         {
-            RadioStation station;
-            if (Enum.TryParse<RadioStation>(arg, out station))
-            {
-                Game.RadioStation = station;
-            }
+            Function.Call(Hash.SET_RADIO_TO_STATION_NAME, arg);
         }
 
         public static void FixPlayerVehicle(string arg)

@@ -50,7 +50,7 @@ namespace VStats_plugin
             // Game and world
             dat.GameTime = World.CurrentDayTime;
             dat.FPS = Game.FPS;
-            dat.RadioStation = Game.RadioStation.ToString();
+            dat.RadioStation = WorldHelper.GetRadioFriendlyName(Function.Call<string>(Hash.GET_PLAYER_RADIO_STATION_NAME));
             dat.Weather = World.Weather.ToString();
 
             // Player

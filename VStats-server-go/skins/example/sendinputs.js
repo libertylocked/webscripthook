@@ -5,7 +5,7 @@ function radioNext() {
   sendToGame("Radio", "1");
 }
 function radioSelf() {
-  sendToGame("RadioTo", "SelfRadio");
+  sendToGame("RadioTo", "RADIO_19_USER");
 }
 function fixCar() {
   sendToGame("Repair", "");
