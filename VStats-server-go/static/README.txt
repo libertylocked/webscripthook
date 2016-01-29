@@ -7,3 +7,6 @@ If you have additional assets or scripts, put them in your own skin folder.
 Credits:
 https://jquery.org/
 https://getbootstrap.com/
+https://github.com/FortAwesome/Font-Awesome
+https://github.com/daneden/animate.css
+https://github.com/matthieua/WOW
