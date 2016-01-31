@@ -10,8 +10,9 @@ import (
 )
 
 type input struct {
-	Cmd string
-	Arg string
+	Cmd  string
+	Arg  string
+	Args []interface{} `json:"Args,omitempty"`
 }
 
 var dataCache = "NO_DATA"
@@ -55,7 +56,7 @@ func handlePostJSON(w http.ResponseWriter, r *http.Request) {
 			}
 			w.Header().Set("Content-Type", "application/json")
 			w.Write(js)
-			log.Println("Channel dequeued:", x.Cmd, x.Arg)
+			log.Println("Channel dequeued:", x)
 		} else {
 			log.Println("Channel closed!")
 		}
@@ -75,7 +76,7 @@ func handlePostInput(w http.ResponseWriter, r *http.Request) {
 
 	select {
 	case ch <- t:
-		log.Println("POST: Sent to channel:", t.Cmd, t.Arg)
+		log.Println("POST: Sent to channel:", t)
 	default:
 		log.Println("POST: Channel full. Discarding value")
 	}

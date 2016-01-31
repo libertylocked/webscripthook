@@ -24,6 +24,7 @@ namespace VStats_plugin
             {"spawnped", Commands.SpawnPed},
             {"giveweapon", Commands.GiveWeapon},
             {"showsavemenu", Commands.ShowSaveMenu},
+            {"native", Commands.CallNative},
         };
 
         /// <summary>

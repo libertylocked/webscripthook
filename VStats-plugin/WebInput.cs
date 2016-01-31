@@ -11,8 +11,9 @@ namespace VStats_plugin
 {
     class WebInput
     {
-        public string Cmd { get; set; }
+        public string Cmd { get; set; } 
         public string Arg { get; set; }
+        public object[] Args { get; set; }
 
         public void Execute()
         {
@@ -21,7 +22,7 @@ namespace VStats_plugin
             WebFunction func = FunctionConvert.GetFunction(Cmd);
             if (func != null)
             {
-                func(Arg);
+                func(Arg, Args);
             }
         }
     }

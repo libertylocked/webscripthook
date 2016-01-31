@@ -82,7 +82,11 @@ namespace VStats_plugin
                             if (response != null && response.Length > 0)
                             {
                                 WebInput input = JsonConvert.DeserializeObject<WebInput>(Encoding.ASCII.GetString(response));
-                                if (input != null) inputQueue.Enqueue(input);
+                                if (input != null)
+                                {
+                                    inputQueue.Enqueue(input);
+                                    Logger.Log(Encoding.ASCII.GetString(response));
+                                }
                             }
                         }
                     }

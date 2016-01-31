@@ -12,7 +12,7 @@ namespace VStats_plugin
 {
     class Commands
     {
-        public static void Radio(string tuneTo)
+        public static void Radio(string tuneTo, object[] args)
         {
             int increment;
             if (tuneTo == "1")
@@ -41,12 +41,12 @@ namespace VStats_plugin
             }
         }
 
-        public static void RadioTo(string arg)
+        public static void RadioTo(string arg, object[] args)
         {
             Function.Call(Hash.SET_RADIO_TO_STATION_NAME, arg);
         }
 
-        public static void FixPlayerVehicle(string arg)
+        public static void FixPlayerVehicle(string arg, object[] args)
         {
             if (Game.Player.Character.IsInVehicle())
             {
@@ -54,7 +54,7 @@ namespace VStats_plugin
             }
         }
 
-        public static void SetWantedLevel(string arg)
+        public static void SetWantedLevel(string arg, object[] args)
         {
             int stars;
             if (int.TryParse(arg, out stars) && stars >= 0 && stars <= 5)
@@ -63,7 +63,7 @@ namespace VStats_plugin
             }
         }
 
-        public static void SetPlayerHealth(string arg)
+        public static void SetPlayerHealth(string arg, object[] args)
         {
             int hp;
             if (int.TryParse(arg, out hp) && hp >= -1 && hp <= Game.Player.Character.MaxHealth)
@@ -72,7 +72,7 @@ namespace VStats_plugin
             }
         }
 
-        public static void SetPlayerArmor(string arg)
+        public static void SetPlayerArmor(string arg, object[] args)
         {
             int ar;
             if (int.TryParse(arg, out ar) && ar >= 0 && ar <= 100)
@@ -81,7 +81,7 @@ namespace VStats_plugin
             }
         }
 
-        public static void SetBlackout(string arg)
+        public static void SetBlackout(string arg, object[] args)
         {
             bool on;
             if (bool.TryParse(arg, out on))
@@ -90,7 +90,7 @@ namespace VStats_plugin
             }
         }
 
-        public static void ChangeTime(string arg)
+        public static void ChangeTime(string arg, object[] args)
         {
             TimeSpan ts;
             if (TimeSpan.TryParse(arg, out ts))
@@ -99,7 +99,7 @@ namespace VStats_plugin
             }
         }
 
-        public static void ChangeWeather(string arg)
+        public static void ChangeWeather(string arg, object[] args)
         {
             Weather weather;
             if (Enum.TryParse<Weather>(arg, out weather))
@@ -108,13 +108,13 @@ namespace VStats_plugin
             }
         }
 
-        public static void MaxAmmo(string arg)
+        public static void MaxAmmo(string arg, object[] args)
         {
             Weapon currWep = Game.Player.Character.Weapons.Current;
             currWep.Ammo = currWep.MaxAmmo;
         }
 
-        public static void SpawnVehicle(string arg)
+        public static void SpawnVehicle(string arg, object[] args)
         {
             VehicleHash vehHash;
             if (Enum.TryParse<VehicleHash>(arg, out vehHash))
@@ -123,7 +123,7 @@ namespace VStats_plugin
             }
         }
 
-        public static void SpawnPed(string arg)
+        public static void SpawnPed(string arg, object[] args)
         {
             PedHash pedHash;
             if (Enum.TryParse<PedHash>(arg, out pedHash))
@@ -132,7 +132,7 @@ namespace VStats_plugin
             }
         }
 
-        public static void GiveWeapon(string arg)
+        public static void GiveWeapon(string arg, object[] args)
         {
             WeaponHash wepHash;
             if (Enum.TryParse<WeaponHash>(arg, out wepHash))
@@ -141,9 +141,32 @@ namespace VStats_plugin
             }
         }
 
-        public static void ShowSaveMenu(string arg)
+        public static void ShowSaveMenu(string arg, object[] args)
         {
             Game.ShowSaveMenu();
+        }
+
+        public static void CallNative(string arg, object[] args)
+        {
+            // Arg is the native hash
+            Hash nativeHash;
+            if (!Enum.TryParse<Hash>(arg, out nativeHash)) return;
+
+            // Build arguments
+            List<InputArgument> nativeArgs = new List<InputArgument>();
+            for (int i = 0; i < args.Length; i++)
+            {
+                dynamic parameter = args[i];
+                if (parameter.GetType() == typeof(System.Int64))
+                {
+                    parameter = (int)parameter;
+                }
+                nativeArgs.Add(parameter);
+                Logger.Log("Args[" + i + "]: " + parameter.ToString() + " " + parameter.GetType());
+            }
+
+            Logger.Log("Native called: " + nativeHash.ToString());
+            Function.Call(nativeHash, nativeArgs.ToArray());
         }
     }
 }
