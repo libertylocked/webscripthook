@@ -56,7 +56,7 @@ namespace VStats_plugin
             dat.Weather = World.Weather.ToString();
 
             // Player
-            dat.PlayerHandle = Game.Player.Handle;
+            dat.PlayerHandle = Game.Player.Character.Handle;
             dat.WantedLevel = Game.Player.WantedLevel;
             dat.PlayerHealth = Function.Call<int>(Hash.GET_ENTITY_HEALTH, Game.Player.Character.Handle) - 100;
             dat.PlayerArmor = Game.Player.Character.Armor;
