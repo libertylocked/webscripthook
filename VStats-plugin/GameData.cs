@@ -18,6 +18,7 @@ namespace VStats_plugin
         public string Weather { get; set; }
 
         // Player
+        public int PlayerHandle { get; set; }
         public int WantedLevel { get; set; }
         public int PlayerHealth { get; set; }
         public int PlayerArmor { get; set; }
@@ -35,6 +36,7 @@ namespace VStats_plugin
         public int WeaponMaxInClip { get; set; }
 
         // Vechicle
+        public int VehicleHandle { get; set; }
         public string VehicleName { get; set; }
         public float VehicleSpeed { get; set; }
         public float VehicleRPM { get; set; }
@@ -54,6 +56,7 @@ namespace VStats_plugin
             dat.Weather = World.Weather.ToString();
 
             // Player
+            dat.PlayerHandle = Game.Player.Handle;
             dat.WantedLevel = Game.Player.WantedLevel;
             dat.PlayerHealth = Function.Call<int>(Hash.GET_ENTITY_HEALTH, Game.Player.Character.Handle) - 100;
             dat.PlayerArmor = Game.Player.Character.Armor;
@@ -74,6 +77,7 @@ namespace VStats_plugin
             if (Game.Player.Character.IsInVehicle())
             {
                 var veh = Game.Player.Character.CurrentVehicle;
+                dat.VehicleHandle = veh.Handle;
                 dat.VehicleName = veh.FriendlyName;
                 dat.VehicleSpeed = veh.Speed;
                 dat.VehicleRPM = veh.CurrentRPM;
