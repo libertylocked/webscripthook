@@ -12,7 +12,7 @@ namespace VStats_plugin
         public static void Log(object message)
         {
 #if DEBUG
-            File.AppendAllText(@"VStats.log", DateTime.Now + " : " + message + Environment.NewLine);
+            File.AppendAllText(@".\scripts\VStats.log", DateTime.Now + " : " + message + Environment.NewLine);
 #endif
         }
     }
