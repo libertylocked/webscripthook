@@ -27,7 +27,7 @@
     function(data) {
       $("#currVer").text(VERSION);
       if (VERSION == data["tag_name"]) {
-        $("#remoteVer").text("Latest");
+        $("#remoteVer").text("(Latest)");
       } else {
         $("#remoteVer").html("<a href='" + data["html_url"] + "'><i class='fa fa-arrow-circle-up'></i>Update " + data["tag_name"] + "</a>")
       }
@@ -55,7 +55,7 @@
     <p>Last message received from the game: <spam id="time"></spam></p>
   </div>
   <div class="container" style="margin-top: 20px">
-    <p>Current version: <span id="currVer">Checking...</span> <span id="remoteVer"></span></p>
+    <p>Version: <span id="currVer">Checking...</span> <span id="remoteVer"></span></p>
     <p id="creditsText"><em>Created by libertylocked. All rights reserved.</em> Skins are owned by their respective authors. <a href="https://github.com/libertylocked/VStats">View this project on GitHub</a></p>
   </div>
 </body>
