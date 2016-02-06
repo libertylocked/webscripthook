@@ -57,9 +57,10 @@ namespace VStats_plugin
                 {
                     input.Execute();
                 }
-                catch
+                catch (Exception ex)
                 {
                     UI.Notify("VStats func failed: " + input.Cmd + " " + input.Arg);
+                    Logger.Log(ex.ToString());
                 }
             }
         }

@@ -161,6 +161,13 @@ namespace VStats_plugin
                 {
                     parameter = (int)parameter;
                 }
+                else if (parameter.GetType() == typeof(System.String))
+                {
+                    if (parameter.StartsWith("{float}"))
+                    {
+                        parameter = float.Parse(((string)parameter).Substring(7));
+                    }
+                }
                 nativeArgs.Add(parameter);
                 Logger.Log("Args[" + i + "]: " + parameter.ToString() + " " + parameter.GetType());
             }

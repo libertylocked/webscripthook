@@ -39,8 +39,10 @@ function sendInputClick() {
   for (var i = 0; i < argDivs.length; i++) {
     var aType = $(argDivs[i]).find("select option:selected").text();
     var aData = $(argDivs[i]).find("input").val();
-    if (aType == "int" || aType == "float") {
+    if (aType == "int") {
       aData = Number(aData);
+    } else if (aType == "float") {
+      aData = "{float}" + aData;
     } else if (aType == "bool") {
       aData = aData.toLowerCase() == "true" ? true : false;
     }
