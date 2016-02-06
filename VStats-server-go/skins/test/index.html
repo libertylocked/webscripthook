@@ -1,0 +1,88 @@
+<html>
+<head>
+  <title>Test dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/bootstrap/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="/static/jquery-1.11.3.min.js"></script>
+  <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+  <script src="sendinputs.js"></script>
+  <script>
+  $(document).ready(function(){
+    update();
+    $("#sendBtn").click(sendInputClick);
+    $("#addArgsBtn").click(addArgsClick);
+    $("#removeArgsBtn").click(removeArgsClick);
+  });
+  function update() {
+    $.get("/pull", callback);
+  }
+  function callback(data) {
+    if (data && data != "NO_DATA") {
+      var json = JSON.parse(data);
+      $("#statsPrint").text(JSON.stringify(json, null, 2));
+    }
+    setTimeout(update, 40);
+  }
+  </script>
+</head>
+<body>
+  <div id="sidebar" class="container col-md-2">
+    <h3>Test dashboard by libertylocked</h3>
+    <ul class="nav nav-pills nav-stacked">
+      <li class="active"><a href="#tabRaw" data-toggle="tab">Raw</a></li>
+      <li><a href="#tabInput" data-toggle="tab">Free input</a></li>
+    </ul>
+  </div>
+  <div id="mainTab" class="tab-content col-md-10">
+    <div class="container-fluid tab-pane active" id="tabRaw">
+      <h2>Raw JSON data</h2>
+      <pre><p id="statsPrint"></p></pre>
+    </div>
+    <div class="container-fluid tab-pane" id="tabInput">
+      <h2>Send input</h2>
+      <form role="form">
+        <div class="form-group">
+          <label for="cmd">Cmd:</label>
+          <input type="text" class="form-control" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="cmd">
+        </div>
+        <div class="form-group">
+          <label for="arg">Arg:</label>
+          <input type="text" class="form-control" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="arg">
+        </div>
+        <div class="form-group">
+          <label for="cmd">Args:</label>
+          <button type="button" class="btn btn-default" id="addArgsBtn">Add</button>
+          <button type="button" class="btn btn-default" id="removeArgsBtn">Remove</button>
+        </div>
+        <div class="controls" id="argsDivs">
+
+        </div>
+        <hr>
+        <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#myModal" id="sendBtn">Send</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Modal -->
+  <div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title" id="sendResultTitle"></h4>
+        </div>
+        <div class="modal-body">
+          <pre><p id="sendResultBody"></p></pre>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default btn-lg btn-block" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
