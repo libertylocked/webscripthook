@@ -29,7 +29,7 @@ namespace VStats_plugin
         public MainScript()
         {
             // SETUP
-            var settings = ScriptSettings.Load(@".\scripts\VStats-plugin.ini");
+            var settings = ScriptSettings.Load(@".\scripts\VStats.ini");
             string port = settings.GetValue("Core", "PORT", "8080");
             int interval = settings.GetValue("Core", "INTERVAL", 10);
             url = "http://localhost:" + port + "/push";

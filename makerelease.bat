@@ -4,10 +4,11 @@ mkdir Release\plugin
 mkdir Release\server
 rem Build plugin
 C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe .\VStats-plugin\VStats-plugin.csproj /P:Configuration=Release
-robocopy .\VStats-plugin\bin\Release\ .\Release\plugin *.dll *.ini /xf ScriptHookVDotNet.dll
+robocopy .\VStats-plugin\bin\Release\ .\Release\plugin *.ini
+robocopy .\VStats-plugin\bin\Release\ .\Release\plugin\VStats *.dll /xf ScriptHookVDotNet.dll
 rem Build server
 cd VStats-server-go
-copy ..\VStats-plugin\VStats-plugin.ini .\VStats-plugin.ini
+copy ..\VStats-plugin\VStats.ini .\VStats.ini
 go build 
 cd ..
 robocopy .\VStats-server-go\ .\Release\server /E /xf *.go build.bat

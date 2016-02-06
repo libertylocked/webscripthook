@@ -1,2 +1,2 @@
-copy ..\VStats-plugin\VStats-plugin.ini .\VStats-plugin.ini
+copy ..\VStats-plugin\VStats.ini .\VStats.ini
 go build 
