@@ -17,8 +17,8 @@ namespace VStats_plugin
 {
     class MainScript : Script
     {
-        private readonly string url;
-        private readonly int sleepTime;
+        private string url;
+        private int sleepTime;
 
         //private SemaphoreSlim PostDataSemaphore = new SemaphoreSlim(1, 1);
         Object lockThis = new Object();
@@ -29,11 +29,7 @@ namespace VStats_plugin
         public MainScript()
         {
             // SETUP
-            var settings = ScriptSettings.Load(@".\scripts\VStats.ini");
-            string port = settings.GetValue("Core", "PORT", "8080");
-            int interval = settings.GetValue("Core", "INTERVAL", 10);
-            url = "http://localhost:" + port + "/push";
-            sleepTime = interval;
+            ParseConfig();
 
             this.inputQueue = new ConcurrentQueue<WebInput>();
             this.isStopped = true;
@@ -100,6 +96,17 @@ namespace VStats_plugin
                 }
                 //isStopped = true;
             }
+        }
+
+        private void ParseConfig()
+        {
+            var settings = ScriptSettings.Load(@".\scripts\VStats.ini");
+            string port = settings.GetValue("Core", "PORT", "8080");
+            int interval = settings.GetValue("Core", "INTERVAL", 10);
+            Logger.Enable = settings.GetValue("Core", "LOGGING", false);
+
+            url = "http://localhost:" + port + "/push";
+            sleepTime = interval;
         }
     }
 }

@@ -16,7 +16,8 @@ func getPort() string {
 	cfg := struct {
 		Core struct {
 			PORT     string
-			INTERVAL string
+			INTERVAL int
+			LOGGING  bool
 		}
 	}{}
 	err := gcfg.ReadStringInto(&cfg, cfgStr)

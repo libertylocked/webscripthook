@@ -9,11 +9,14 @@ namespace VStats_plugin
 {
     public static class Logger
     {
+        public static bool Enable = false;
+
         public static void Log(object message)
         {
-#if DEBUG
-            File.AppendAllText(@".\scripts\VStats.log", DateTime.Now + " : " + message + Environment.NewLine);
-#endif
+            if (Enable)
+            {
+                File.AppendAllText(@".\scripts\VStats.log", DateTime.Now + " : " + message + Environment.NewLine);
+            }
         }
     }
 }
