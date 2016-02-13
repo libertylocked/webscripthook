@@ -21,28 +21,26 @@ namespace VStats_plugin
         private int sleepTime;
 
         //private SemaphoreSlim PostDataSemaphore = new SemaphoreSlim(1, 1);
-        Object lockThis = new Object();
-        bool isStopped;
+        //Object lockThis = new Object();
+        //bool isStopped;
         GameData cacheData;
         ConcurrentQueue<WebInput> inputQueue;
+        Thread workerThread;
+        WebClient client;
 
         public MainScript()
         {
-            // SETUP
             ParseConfig();
 
             this.inputQueue = new ConcurrentQueue<WebInput>();
-            this.isStopped = true;
+            this.client = new WebClient();
             this.Tick += OnTick;
+
+            CreateWorkerThread();
         }
 
         private void OnTick(object sender, EventArgs e)
         {
-            if (isStopped)
-            {
-                Thread workerThread = new Thread(ThreadProc_PostJSON);
-                workerThread.Start();
-            }
             cacheData = GameData.GetData();
             
             // Check for inputs
@@ -61,40 +59,37 @@ namespace VStats_plugin
             }
         }
 
+        private void CreateWorkerThread()
+        {
+            workerThread = new Thread(ThreadProc_PostJSON);
+            workerThread.Start();
+        }
+
         private void ThreadProc_PostJSON()
         {
-            lock (lockThis)
+            while (true)
             {
-                isStopped = false;
-                while (true)
+                try
                 {
-                    try
+                    var values = new NameValueCollection();
+                    values["d"] = JsonConvert.SerializeObject(cacheData);
+                    var response = client.UploadValues(url, values);
+                    // Read response
+                    if (response != null && response.Length > 0)
                     {
-                        using (var client = new WebClient())
+                        WebInput input = JsonConvert.DeserializeObject<WebInput>(Encoding.ASCII.GetString(response));
+                        if (input != null)
                         {
-                            var values = new NameValueCollection();
-                            values["d"] = JsonConvert.SerializeObject(cacheData);
-                            var response = client.UploadValues(url, values);
-                            // Read response
-                            if (response != null && response.Length > 0)
-                            {
-                                WebInput input = JsonConvert.DeserializeObject<WebInput>(Encoding.ASCII.GetString(response));
-                                if (input != null)
-                                {
-                                    inputQueue.Enqueue(input);
-                                    Logger.Log(Encoding.ASCII.GetString(response));
-                                }
-                            }
+                            inputQueue.Enqueue(input);
+                            Logger.Log(Encoding.ASCII.GetString(response));
                         }
                     }
-                    catch
-                    {
-                        Thread.Sleep(100);
-                        //throw;
-                    }
-                    Thread.Sleep(sleepTime);
                 }
-                //isStopped = true;
+                catch
+                {
+                    Thread.Sleep(100);
+                }
+                Thread.Sleep(sleepTime);
             }
         }
 
