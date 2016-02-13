@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using GTA;
 using Newtonsoft.Json;
+using WebSocketSharp;
 
 namespace VStats_plugin
 {
@@ -23,14 +24,12 @@ namespace VStats_plugin
         GameData cacheData;
         ConcurrentQueue<WebInput> inputQueue;
         Thread workerThread;
-        WebClient client;
 
         public MainScript()
         {
             ParseConfig();
 
             this.inputQueue = new ConcurrentQueue<WebInput>();
-            this.client = new WebClient();
             this.Tick += OnTick;
 
             CreateWorkerThread();
@@ -56,6 +55,18 @@ namespace VStats_plugin
             }
         }
 
+        private void ParseConfig()
+        {
+            var settings = ScriptSettings.Load(@".\scripts\VStats.ini");
+            string port = settings.GetValue("Core", "PORT", "8080");
+            int interval = settings.GetValue("Core", "INTERVAL", 10);
+            Logger.Enable = settings.GetValue("Core", "LOGGING", false);
+
+            //url = "http://localhost:" + port + "/push";
+            url = "ws://localhost:" + port + "/pushws";
+            sleepTime = interval;
+        }
+
         private void CreateWorkerThread()
         {
             workerThread = new Thread(ThreadProc_PostJSON);
@@ -64,23 +75,15 @@ namespace VStats_plugin
 
         private void ThreadProc_PostJSON()
         {
+            WebSocket ws = new WebSocket(url);
+            ws.OnMessage += WS_OnMessage;
+
             while (true)
             {
                 try
                 {
-                    var values = new NameValueCollection();
-                    values["d"] = JsonConvert.SerializeObject(cacheData);
-                    var response = client.UploadValues(url, values);
-                    // Read response
-                    if (response != null && response.Length > 0)
-                    {
-                        WebInput input = JsonConvert.DeserializeObject<WebInput>(Encoding.ASCII.GetString(response));
-                        if (input != null)
-                        {
-                            inputQueue.Enqueue(input);
-                            Logger.Log(Encoding.ASCII.GetString(response));
-                        }
-                    }
+                    if (!ws.IsAlive) ws.Connect();
+                    ws.Send(JsonConvert.SerializeObject(cacheData));
                 }
                 catch
                 {
@@ -90,15 +93,15 @@ namespace VStats_plugin
             }
         }
 
-        private void ParseConfig()
+        private void WS_OnMessage(object sender, MessageEventArgs e)
         {
-            var settings = ScriptSettings.Load(@".\scripts\VStats.ini");
-            string port = settings.GetValue("Core", "PORT", "8080");
-            int interval = settings.GetValue("Core", "INTERVAL", 10);
-            Logger.Enable = settings.GetValue("Core", "LOGGING", false);
-
-            url = "http://localhost:" + port + "/push";
-            sleepTime = interval;
+            if (String.IsNullOrWhiteSpace(e.Data)) return;
+            WebInput input = JsonConvert.DeserializeObject<WebInput>(e.Data);
+            if (input != null)
+            {
+                inputQueue.Enqueue(input);
+                Logger.Log(e.Data);
+            }
         }
     }
 }
