@@ -20,9 +20,6 @@ namespace VStats_plugin
         private string url;
         private int sleepTime;
 
-        //private SemaphoreSlim PostDataSemaphore = new SemaphoreSlim(1, 1);
-        //Object lockThis = new Object();
-        //bool isStopped;
         GameData cacheData;
         ConcurrentQueue<WebInput> inputQueue;
         Thread workerThread;
