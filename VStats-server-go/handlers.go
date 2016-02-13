@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -31,6 +32,10 @@ func handleGetTimeReceived(w http.ResponseWriter, r *http.Request) {
 		resp = timeReceived.Format("15:04:05")
 	}
 	io.WriteString(w, resp)
+}
+
+func handleGetPluginConnected(w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, strconv.FormatBool(pluginConnected))
 }
 
 func handleGetDummyJSON(w http.ResponseWriter, r *http.Request) {
