@@ -14,6 +14,11 @@ var upgrader = websocket.Upgrader{
 }
 
 func handlePluginWS(w http.ResponseWriter, r *http.Request) {
+	if pluginConnected {
+		// Refuse this connection
+		http.Error(w, http.StatusText(401), 401)
+		return
+	}
 	c, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println("WS: ", err)

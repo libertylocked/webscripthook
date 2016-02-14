@@ -17,21 +17,12 @@ type input struct {
 }
 
 var dataCache = "NO_DATA"
-var timeReceived time.Time
 var pluginConnected = false
 var ch = make(chan input, 10) // input channel, used to send inputs from web to game
 
 func handleGetJSON(w http.ResponseWriter, r *http.Request) {
 	// Front-end client gets game data from server
 	io.WriteString(w, dataCache)
-}
-
-func handleGetTimeReceived(w http.ResponseWriter, r *http.Request) {
-	resp := "NO_DATA"
-	if !timeReceived.IsZero() {
-		resp = timeReceived.Format("15:04:05")
-	}
-	io.WriteString(w, resp)
 }
 
 func handleGetPluginConnected(w http.ResponseWriter, r *http.Request) {
