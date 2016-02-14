@@ -48,12 +48,13 @@ function sendInputClick() {
     }
     args.push(aData);
   }
-  var jsonStr = sendInput(cmd, arg, args);
-  $("#sendResultTitle").text("Sent");
-  $("#sendResultBody").text(jsonStr);
+  sendInput(cmd, arg, args, function(data) {
+    $("#sendResultTitle").text("Sent");
+    $("#sendResultBody").text(data);
+  });
 }
 
-function sendInput(cmd, arg, args) {
+function sendInput(cmd, arg, args, callback) {
   var stringified = JSON.stringify({ "Cmd": cmd, "Arg" : arg, "Args" : args }, null, 2);
   $.ajax({
     url: '/input',
@@ -61,6 +62,5 @@ function sendInput(cmd, arg, args) {
     dataType: 'json',
     success: null,
     data: stringified,
-  });
-  return stringified;
+  }).done(callback);
 }
