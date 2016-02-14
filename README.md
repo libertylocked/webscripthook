@@ -35,7 +35,7 @@ Inspired by [ETS2 Telemetry Server](https://github.com/Funbit/ets2-telemetry-ser
 
 # Other notes
 - Whether you start the game first or the server first does not matter
-- If you want to change port, make sure you modify "VStats-plugin.ini" for **both the plugin and the server**
+- If you want to change port, make sure you modify "VStats.ini" for **both the plugin and the server**
 - If things broke, check "GTAV/ScriptHookVDotNet-2016-01-19.log" (replace the date with your current date) for errors
 
 # Screenshots
