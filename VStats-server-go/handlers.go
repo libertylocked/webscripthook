@@ -8,17 +8,21 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/satori/go.uuid"
 )
 
 type input struct {
 	Cmd  string
 	Arg  string
 	Args []interface{} `json:"Args,omitempty"`
+	UID  uuid.UUID
 }
 
 var dataCache = "NO_DATA"
 var pluginConnected = false
-var ch = make(chan input, 10) // input channel, used to send inputs from web to game
+var ch = make(chan input, 10)                       // input channel, used to send inputs from web to game
+var retChMap = make(map[uuid.UUID]chan interface{}) // return map, used for plugin return values
 
 func handleGetJSON(w http.ResponseWriter, r *http.Request) {
 	// Front-end client gets game data from server
@@ -37,6 +41,7 @@ func handleGetDummyJSON(w http.ResponseWriter, r *http.Request) {
 }
 
 func handlePostInput(w http.ResponseWriter, r *http.Request) {
+	// Front-end client sends input to game
 	decoder := json.NewDecoder(r.Body)
 	var t input
 	err := decoder.Decode(&t)
@@ -44,11 +49,36 @@ func handlePostInput(w http.ResponseWriter, r *http.Request) {
 		log.Println("POST: Error decoding input", err)
 		return
 	}
-
+	// Attach a UUID to the request input
+	t.UID = uuid.NewV4()
 	select {
 	case ch <- t:
 		log.Println("POST: Sent to channel:", t)
+		// Now we wait till the plugin sends the return value back
+		retChMap[t.UID] = make(chan interface{})
+		defer delete(retChMap, t.UID)
+		timeout := make(chan bool, 1)
+		go func() {
+			time.Sleep(1 * time.Second)
+			timeout <- true
+		}()
+		select {
+		case retVal := <-retChMap[t.UID]:
+			// A return value has arrived!
+			seralizedRet, err := json.Marshal(retVal)
+			if err != nil {
+				log.Println("POST: Return marshal error:", err)
+			} else {
+				// Return success!
+				w.Write(seralizedRet)
+			}
+		case <-timeout:
+			// Return value never arrived (sad face)
+			log.Println("POST: Return timeout:", t)
+			io.WriteString(w, "timeout")
+		}
 	default:
+		// Fails to POST the input because chan is full
 		log.Println("POST: Channel full. Discarding value")
 	}
 }

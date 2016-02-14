@@ -12,7 +12,7 @@ namespace VStats_plugin
 {
     class Commands
     {
-        public static void Radio(string tuneTo, object[] args)
+        public static object Radio(string tuneTo, object[] args)
         {
             int increment;
             if (tuneTo == "1")
@@ -39,118 +39,137 @@ namespace VStats_plugin
                 var newStation = (RadioStation)(radioStations.GetValue(newIndex));
                 Game.RadioStation = newStation;
             }
+            return null;
         }
 
-        public static void RadioTo(string arg, object[] args)
+        public static object RadioTo(string arg, object[] args)
         {
             Function.Call(Hash.SET_RADIO_TO_STATION_NAME, arg);
+            return null;
         }
 
-        public static void FixPlayerVehicle(string arg, object[] args)
+        public static object FixPlayerVehicle(string arg, object[] args)
         {
             if (Game.Player.Character.IsInVehicle())
             {
                 Game.Player.Character.CurrentVehicle.Repair();
             }
+            return null;
         }
 
-        public static void SetWantedLevel(string arg, object[] args)
+        public static object SetWantedLevel(string arg, object[] args)
         {
             int stars;
             if (int.TryParse(arg, out stars) && stars >= 0 && stars <= 5)
             {
                 Game.Player.WantedLevel = stars;
             }
+            return null;
         }
 
-        public static void SetPlayerHealth(string arg, object[] args)
+        public static object SetPlayerHealth(string arg, object[] args)
         {
             int hp;
             if (int.TryParse(arg, out hp) && hp >= -1 && hp <= Game.Player.Character.MaxHealth)
             {
                 Game.Player.Character.Health = hp;
             }
+            return null;
         }
 
-        public static void SetPlayerArmor(string arg, object[] args)
+        public static object SetPlayerArmor(string arg, object[] args)
         {
             int ar;
             if (int.TryParse(arg, out ar) && ar >= 0 && ar <= 100)
             {
                 Game.Player.Character.Armor = ar;
             }
+            return null;
         }
 
-        public static void SetBlackout(string arg, object[] args)
+        public static object SetBlackout(string arg, object[] args)
         {
             bool on;
             if (bool.TryParse(arg, out on))
             {
                 World.SetBlackout(on);
             }
+            return null;
         }
 
-        public static void ChangeTime(string arg, object[] args)
+        public static object ChangeTime(string arg, object[] args)
         {
             TimeSpan ts;
             if (TimeSpan.TryParse(arg, out ts))
             {
                 World.CurrentDayTime = ts;
             }
+            return null;
         }
 
-        public static void ChangeWeather(string arg, object[] args)
+        public static object ChangeWeather(string arg, object[] args)
         {
             Weather weather;
             if (Enum.TryParse<Weather>(arg, out weather))
             {
                 World.Weather = weather;
             }
+            return null;
         }
 
-        public static void MaxAmmo(string arg, object[] args)
+        public static object MaxAmmo(string arg, object[] args)
         {
             Weapon currWep = Game.Player.Character.Weapons.Current;
             currWep.Ammo = currWep.MaxAmmo;
+            return null;
         }
 
-        public static void SpawnVehicle(string arg, object[] args)
+        public static object SpawnVehicle(string arg, object[] args)
         {
             VehicleHash vehHash;
             if (Enum.TryParse<VehicleHash>(arg, out vehHash))
             {
                 World.CreateVehicle(new Model(vehHash), Game.Player.Character.Position + Game.Player.Character.ForwardVector * 5);
             }
+            return null;
         }
 
-        public static void SpawnPed(string arg, object[] args)
+        public static object SpawnPed(string arg, object[] args)
         {
             PedHash pedHash;
             if (Enum.TryParse<PedHash>(arg, out pedHash))
             {
                 World.CreatePed(new Model(pedHash), Game.Player.Character.Position + Game.Player.Character.ForwardVector * 5);
             }
+            return null;
         }
 
-        public static void GiveWeapon(string arg, object[] args)
+        public static object GiveWeapon(string arg, object[] args)
         {
             WeaponHash wepHash;
             if (Enum.TryParse<WeaponHash>(arg, out wepHash))
             {
                 Game.Player.Character.Weapons.Give(wepHash, 9999, true, true);
             }
+            return null;
         }
 
-        public static void ShowSaveMenu(string arg, object[] args)
+        public static object ShowSaveMenu(string arg, object[] args)
         {
             Game.ShowSaveMenu();
+            return null;
         }
 
-        public static void CallNative(string arg, object[] args)
+        public static object Echo(string arg, object[] args)
+        {
+            return arg;
+        }
+
+        public static object CallNative(string arg, object[] args)
         {
             // Arg is the native hash
             Hash nativeHash;
-            if (!Enum.TryParse<Hash>(arg, out nativeHash)) return;
+            if (!Enum.TryParse<Hash>(arg, out nativeHash)) return "";
 
             // Build arguments
             List<InputArgument> nativeArgs = new List<InputArgument>();
@@ -174,6 +193,7 @@ namespace VStats_plugin
 
             Logger.Log("Native called: " + nativeHash.ToString());
             Function.Call(nativeHash, nativeArgs.ToArray());
+            return null;
         }
     }
 }

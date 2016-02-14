@@ -23,6 +23,7 @@ namespace VStats_plugin
 
         GameData cacheData;
         ConcurrentQueue<WebInput> inputQueue;
+        ConcurrentQueue<KeyValuePair<string, object>> retQueue;
         Thread workerThread;
 
         public MainScript()
@@ -30,6 +31,7 @@ namespace VStats_plugin
             ParseConfig();
 
             this.inputQueue = new ConcurrentQueue<WebInput>();
+            this.retQueue = new ConcurrentQueue<KeyValuePair<string, object>>();
             this.Tick += OnTick;
 
             CreateWorkerThread();
@@ -45,7 +47,8 @@ namespace VStats_plugin
             {
                 try
                 {
-                    input.Execute();
+                    object retVal = input.Execute();
+                    retQueue.Enqueue(new KeyValuePair<string, object>(input.UID, retVal));
                 }
                 catch (Exception ex)
                 {
@@ -83,7 +86,15 @@ namespace VStats_plugin
                 try
                 {
                     if (!ws.IsAlive) ws.Connect();
+                    // Send game data
                     ws.Send(JsonConvert.SerializeObject(cacheData));
+                    // Send return values
+                    KeyValuePair<string, object> retPair;
+                    while (retQueue.TryDequeue(out retPair))
+                    {
+                        ws.Send("RET:" + JsonConvert.SerializeObject(retPair));
+                        Logger.Log("Returning " + retPair.Key + " " + retPair.Value);
+                    }
                 }
                 catch
                 {

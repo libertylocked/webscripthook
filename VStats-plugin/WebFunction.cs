@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace VStats_plugin
 {
-    delegate void WebFunction(string arg, params object[] args);
+    delegate object WebFunction(string arg, params object[] args);
 }
