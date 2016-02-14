@@ -16,10 +16,12 @@ func main() {
 	printCredits()
 
 	router.HandleFunc("/pull", handleGetJSON)
-	router.HandleFunc("/getTime", handleGetTimeReceived)
-	router.HandleFunc("/push", handlePostJSON)
-	router.HandleFunc("/dummy", handleGetDummyJSON)
+	router.HandleFunc("/connected", handleGetPluginConnected)
+	// for plugin to upload/download data using websocket
+	router.HandleFunc("/pushws", handlePluginWS)
+	// for browser to send input to plugin
 	router.HandleFunc("/input", handlePostInput)
+	router.HandleFunc("/dummy", handleGetDummyJSON)
 	router.HandleFunc("/", handleIndex)
 
 	http.Handle("/", router)

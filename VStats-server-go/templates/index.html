@@ -16,11 +16,17 @@
     checkLatest();
   });
   function update() {
-    $.get("/getTime", callback);
+    $.get("/connected", callback);
   }
   function callback(data) {
-    $("#time").text(data);
-    setTimeout(update, 300);
+    if (data == "true") {
+      $("#pluginStatus").html('<i class="fa fa-check-circle"></i> Connected');
+      $("#pluginStatus").css("color", "green");
+    } else {
+      $("#pluginStatus").html('<i class="fa fa-exclamation-triangle"></i> Not Connected');
+      $("#pluginStatus").css("color", "red");
+    }
+    setTimeout(update, 500);
   }
   function checkLatest() {
     $.get("https://api.github.com/repos/LibertyLocked/VStats/releases/latest",
@@ -52,7 +58,7 @@
   </div>
   <br>
   <div class="container" id="stats">
-    <p>Last message received from the game: <spam id="time"></spam></p>
+    <p>Plugin status: <span id="pluginStatus"></span></p>
   </div>
   <div class="container" style="margin-top: 20px">
     <p>Version: <span id="currVer">Checking...</span> <span id="remoteVer"></span></p>

@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -16,20 +17,16 @@ type input struct {
 }
 
 var dataCache = "NO_DATA"
-var timeReceived time.Time
+var pluginConnected = false
 var ch = make(chan input, 10) // input channel, used to send inputs from web to game
 
-// Front-end client gets game data from server
 func handleGetJSON(w http.ResponseWriter, r *http.Request) {
+	// Front-end client gets game data from server
 	io.WriteString(w, dataCache)
 }
 
-func handleGetTimeReceived(w http.ResponseWriter, r *http.Request) {
-	resp := "NO_DATA"
-	if !timeReceived.IsZero() {
-		resp = timeReceived.Format("15:04:05")
-	}
-	io.WriteString(w, resp)
+func handleGetPluginConnected(w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, strconv.FormatBool(pluginConnected))
 }
 
 func handleGetDummyJSON(w http.ResponseWriter, r *http.Request) {
@@ -37,32 +34,6 @@ func handleGetDummyJSON(w http.ResponseWriter, r *http.Request) {
 		"time": time.Now().Format("15:04:05"),
 	}
 	renderTemplate(w, "dummy.json", data)
-}
-
-// Plugin posts game data to server
-func handlePostJSON(w http.ResponseWriter, r *http.Request) {
-	data := r.PostFormValue("d") // d stands for game data
-	dataCache = data
-	timeReceived = time.Now()
-
-	// Dequeue one input and send it back
-	select {
-	case x, ok := <-ch:
-		if ok {
-			js, err := json.Marshal(x)
-			if err != nil {
-				log.Println("Failed to marshal input")
-				return
-			}
-			w.Header().Set("Content-Type", "application/json")
-			w.Write(js)
-			log.Println("Channel dequeued:", x)
-		} else {
-			log.Println("Channel closed!")
-		}
-	default:
-		//fmt.Println("No value ready, moving on.")
-	}
 }
 
 func handlePostInput(w http.ResponseWriter, r *http.Request) {
