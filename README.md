@@ -8,6 +8,8 @@ Inspired by [ETS2 Telemetry Server](https://github.com/Funbit/ets2-telemetry-ser
 #### Plugin
 - You need [Script Hook V .NET](https://github.com/crosire/scripthookvdotnet/tree/master) and all its required runtimes
 - Extract the plugin files to "GTAV/scripts"
+ - The configuration file should be at GTAV/scripts/VStats.ini
+ - The DLLs should be at GTAV/scripts/VStats/*.dll
 - Run the game
 
 #### Server
@@ -27,7 +29,7 @@ Inspired by [ETS2 Telemetry Server](https://github.com/Funbit/ets2-telemetry-ser
 #### Make your own skin
 - You need to make some AJAX calls to...
 - Get game data from "/pull"
-- Get last updated time from "/getTime"
+- Get plugin connection status from "/connected"
 - You can also get a dummy data from "/dummy" for testing purposes
 - You can send certain inputs to the game. See [the wiki page](https://github.com/LibertyLocked/VStats/wiki) for details
 
