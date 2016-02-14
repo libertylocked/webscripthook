@@ -53,7 +53,7 @@ func handlePostInput(w http.ResponseWriter, r *http.Request) {
 	t.UID = uuid.NewV4()
 	select {
 	case ch <- t:
-		log.Println("POST: Sent to channel:", t)
+		log.Println("POST: Sent:", t)
 		// Now we wait till the plugin sends the return value back
 		retChMap[t.UID] = make(chan interface{})
 		defer delete(retChMap, t.UID)
@@ -70,6 +70,7 @@ func handlePostInput(w http.ResponseWriter, r *http.Request) {
 				log.Println("POST: Return marshal error:", err)
 			} else {
 				// Return success!
+				log.Println("POST: Returned:", string(seralizedRet))
 				w.Write(seralizedRet)
 			}
 		case <-timeout:
