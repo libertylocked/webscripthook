@@ -76,7 +76,7 @@ func handlePostInput(w http.ResponseWriter, r *http.Request) {
 		case <-timeout:
 			// Return value never arrived (sad face)
 			log.Println("POST: Return timeout:", t.UID)
-			io.WriteString(w, "timeout")
+			http.Error(w, http.StatusText(202), 202)
 		}
 	default:
 		// Fails to POST the input because chan is full

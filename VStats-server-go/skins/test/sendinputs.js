@@ -26,11 +26,12 @@ function removeArgsClick() {
 }
 
 function sendInputClick() {
-  $("#sendResultTitle").text("Not sent");
+  $("#sendResultTitle").text("Sending...");
   $("#sendResultBody").text("");
   var cmd = $("#cmd").val();
   var arg = $("#arg").val();
   if (!cmd) {
+    $("#sendResultTitle").text("Not sent");
     $("#sendResultBody").text("Empty cmd");
     return;
   };
@@ -51,16 +52,22 @@ function sendInputClick() {
   sendInput(cmd, arg, args, function(data) {
     $("#sendResultTitle").text("Sent");
     $("#sendResultBody").text(data);
+  }, function(jqXHR, textStatus, errorThrown) {
+    $("#sendResultTitle").text("Sent with error");
+    $("#sendResultBody").text(errorThrown + " (probably timed out)");
   });
 }
 
-function sendInput(cmd, arg, args, callback) {
-  var stringified = JSON.stringify({ "Cmd": cmd, "Arg" : arg, "Args" : args }, null, 2);
+function sendInput(cmd, arg, args, callback, errorCallback) {
+  var stringified = JSON.stringify({ "Cmd": cmd, "Arg" : arg, "Args" : args });
   $.ajax({
     url: '/input',
     type: 'post',
     dataType: 'json',
     success: null,
     data: stringified,
-  }).done(callback);
+    timeout: 2000,
+    success: callback,
+    error: errorCallback,
+  });
 }
