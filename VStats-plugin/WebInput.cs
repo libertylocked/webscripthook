@@ -14,15 +14,20 @@ namespace VStats_plugin
         public string Cmd { get; set; } 
         public string Arg { get; set; }
         public object[] Args { get; set; }
+        public string UID { get; set; }
 
-        public void Execute()
+        public object Execute()
         {
-            if (string.IsNullOrEmpty(Cmd)) return;
+            if (string.IsNullOrEmpty(Cmd)) return null;
 
             WebFunction func = FunctionConvert.GetFunction(Cmd);
             if (func != null)
             {
-                func(Arg, Args);
+                return func(Arg, Args);
+            }
+            else
+            {
+                return null;
             }
         }
     }
