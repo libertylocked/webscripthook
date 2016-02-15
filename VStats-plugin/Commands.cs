@@ -169,11 +169,15 @@ namespace VStats_plugin
         {
             // Arg is the native hash
             Hash nativeHash;
-            if (!Enum.TryParse<Hash>(arg, out nativeHash)) return "";
+            if (!Enum.TryParse<Hash>(arg, out nativeHash)) return null;
+
+            // Verify return type
+            if (args.Length < 1 || !(args[0] is string)) return null;
+            string retType = (string)args[0];
 
             // Build arguments
             List<InputArgument> nativeArgs = new List<InputArgument>();
-            for (int i = 0; i < args.Length; i++)
+            for (int i = 1; i < args.Length; i++)
             {
                 dynamic parameter = args[i];
                 if (parameter.GetType() == typeof(System.Int64))
@@ -192,8 +196,36 @@ namespace VStats_plugin
             }
 
             Logger.Log("Native called: " + nativeHash.ToString());
-            Function.Call(nativeHash, nativeArgs.ToArray());
-            return null;
+            if (retType == "void")
+            {
+                Function.Call(nativeHash, nativeArgs.ToArray());
+                return null;
+            }
+            else if (retType == "bool") // Boolean
+            {
+                return Function.Call<bool>(nativeHash, nativeArgs.ToArray());
+            }
+            else if (retType == "float") // Single
+            {
+                return Function.Call<float>(nativeHash, nativeArgs.ToArray());
+            }
+            else if (retType == "double") // Double
+            {
+                return Function.Call<double>(nativeHash, nativeArgs.ToArray());
+            }
+            else if (retType == "Int64") // Int64
+            {
+                return Function.Call<Int64>(nativeHash, nativeArgs.ToArray());
+            }
+            else if (retType == "string") // String
+            {
+                return Function.Call<string>(nativeHash, nativeArgs.ToArray());
+            }
+            else // Int32
+            {
+                // because int is mostly used as handles, this is the default type
+                return Function.Call<int>(nativeHash, nativeArgs.ToArray());
+            }
         }
     }
 }

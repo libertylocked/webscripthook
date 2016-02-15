@@ -52,8 +52,10 @@ func handlePluginWS(w http.ResponseWriter, r *http.Request) {
 			var thisRetPair returnPair
 			json.Unmarshal([]byte(dataString[4:]), &thisRetPair)
 			uid, _ := uuid.FromString(thisRetPair.Key)
-			retChMap[uid] <- thisRetPair.Value
-			log.Println("WS: Returned:", uid)
+			if retChMap[uid] != nil {
+				retChMap[uid] <- thisRetPair.Value
+				log.Println("WS: Returned:", uid)
+			}
 		} else {
 			// this is real-time game data
 			dataCache = dataString

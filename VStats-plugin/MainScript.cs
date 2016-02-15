@@ -47,6 +47,7 @@ namespace VStats_plugin
             {
                 try
                 {
+                    Logger.Log("Executing " + input.Cmd + " " + input.Arg);
                     object retVal = input.Execute();
                     retQueue.Enqueue(new KeyValuePair<string, object>(input.UID, retVal));
                 }
@@ -93,7 +94,6 @@ namespace VStats_plugin
                     while (retQueue.TryDequeue(out retPair))
                     {
                         ws.Send("RET:" + JsonConvert.SerializeObject(retPair));
-                        Logger.Log("Returning " + retPair.Key + " " + retPair.Value);
                     }
                 }
                 catch
@@ -111,7 +111,6 @@ namespace VStats_plugin
             if (input != null)
             {
                 inputQueue.Enqueue(input);
-                Logger.Log(e.Data);
             }
         }
     }

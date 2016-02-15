@@ -75,7 +75,7 @@ func handlePostInput(w http.ResponseWriter, r *http.Request) {
 			}
 		case <-timeout:
 			// Return value never arrived (sad face)
-			log.Println("POST: Return timeout:", t)
+			log.Println("POST: Return timeout:", t.UID)
 			io.WriteString(w, "timeout")
 		}
 	default:
