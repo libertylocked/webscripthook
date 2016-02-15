@@ -62,7 +62,7 @@ namespace VStats_plugin
         private void ParseConfig()
         {
             var settings = ScriptSettings.Load(@".\scripts\VStats.ini");
-            string port = settings.GetValue("Core", "PORT", "8080");
+            string port = settings.GetValue("Core", "PORT", "25555");
             int interval = settings.GetValue("Core", "INTERVAL", 10);
             Logger.Enable = settings.GetValue("Core", "LOGGING", false);
 
