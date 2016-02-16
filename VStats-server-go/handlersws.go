@@ -61,25 +61,29 @@ func handlePluginWS(w http.ResponseWriter, r *http.Request) {
 			dataCache = dataString
 		}
 
-		// Dequeue one input and send it back
-		select {
-		case x, ok := <-ch:
-			if ok {
-				js, err := json.Marshal(x)
-				if err != nil {
-					log.Println("WS: Failed to marshal input!", err)
-					break
+		// Dequeue all inputs and send to plugin
+		inputEmpty := false
+		for !inputEmpty {
+			select {
+			case x, ok := <-ch:
+				if ok {
+					js, err := json.Marshal(x)
+					if err != nil {
+						log.Println("WS: Failed to marshal input!", err)
+						break
+					}
+					errWrite := c.WriteMessage(websocket.TextMessage, js)
+					if errWrite != nil {
+						log.Println("WS:", errWrite)
+					}
+					log.Println("WS: Dequeued:", x.UID)
+				} else {
+					log.Println("WS: Channel closed!")
 				}
-				errWrite := c.WriteMessage(websocket.TextMessage, js)
-				if errWrite != nil {
-					log.Println("WS:", errWrite)
-				}
-				log.Println("WS: Dequeued:", x.UID)
-			} else {
-				log.Println("WS: Channel closed!")
+			default:
+				inputEmpty = true
+				//fmt.Println("No value ready, moving on.")
 			}
-		default:
-			//fmt.Println("No value ready, moving on.")
 		}
 	}
 }

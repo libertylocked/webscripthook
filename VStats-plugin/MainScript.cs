@@ -43,7 +43,7 @@ namespace VStats_plugin
             
             // Check for inputs
             WebInput input;
-            if (inputQueue.TryDequeue(out input))
+            while (inputQueue.TryDequeue(out input))
             {
                 try
                 {
