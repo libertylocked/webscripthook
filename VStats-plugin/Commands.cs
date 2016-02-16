@@ -129,9 +129,12 @@ namespace VStats_plugin
             VehicleHash vehHash;
             if (Enum.TryParse<VehicleHash>(arg, out vehHash))
             {
-                World.CreateVehicle(new Model(vehHash), Game.Player.Character.Position + Game.Player.Character.ForwardVector * 5);
+                return World.CreateVehicle(new Model(vehHash), Game.Player.Character.Position + Game.Player.Character.ForwardVector * 5).Handle;
             }
-            return null;
+            else
+            {
+                return null;
+            }
         }
 
         public static object SpawnPed(string arg, object[] args)
@@ -139,9 +142,12 @@ namespace VStats_plugin
             PedHash pedHash;
             if (Enum.TryParse<PedHash>(arg, out pedHash))
             {
-                World.CreatePed(new Model(pedHash), Game.Player.Character.Position + Game.Player.Character.ForwardVector * 5);
+                return World.CreatePed(new Model(pedHash), Game.Player.Character.Position + Game.Player.Character.ForwardVector * 5).Handle;
             }
-            return null;
+            else
+            {
+                return null;
+            }
         }
 
         public static object GiveWeapon(string arg, object[] args)
