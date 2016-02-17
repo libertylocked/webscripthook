@@ -16,7 +16,6 @@ Inspired by [ETS2 Telemetry Server](https://github.com/Funbit/ets2-telemetry-ser
  - The configuration file should be at GTAV/scripts/WebScriptHook/WebScriptHook.ini
  - The DLLs should be at GTAV/scripts/WebScriptHook/*.dll
  - The server exe should be at GTAV/scripts/WebScriptHook/webscripthook-server.exe
-- You need to allow "webscripthook-server.exe" to communicate through firewall
 - Run the game
 
 # WebScriptHook apps
