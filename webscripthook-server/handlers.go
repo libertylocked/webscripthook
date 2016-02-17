@@ -88,8 +88,7 @@ func handleIndex(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate") // HTTP 1.1.
 	w.Header().Set("Pragma", "no-cache")                                   // HTTP 1.0.
 	w.Header().Set("Expires", "0")                                         // Proxies
-	//response := "<h1>Select a skin to start</h1>"
-	files, _ := ioutil.ReadDir("./skins/")
+	files, _ := ioutil.ReadDir("./apps/")
 	tmplData := map[string]time.Time{}
 	for _, f := range files {
 		if f.IsDir() {

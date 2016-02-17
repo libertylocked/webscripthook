@@ -16,7 +16,7 @@ func main() {
 
 	http.Handle("/", getHandlers())
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
-	http.Handle("/skins/", http.StripPrefix("/skins/", http.FileServer(http.Dir("skins"))))
+	http.Handle("/apps/", http.StripPrefix("/apps/", http.FileServer(http.Dir("apps"))))
 	log.Println("Listening on port " + port)
 	http.ListenAndServe(":"+port, nil)
 }
