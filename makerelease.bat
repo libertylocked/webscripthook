@@ -1,17 +1,14 @@
 rmdir Release /s /q
-mkdir Release
-mkdir Release\plugin
-mkdir Release\server
+mkdir Release\WebScriptHook
 rem Build plugin
-C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe .\VStats-plugin\VStats-plugin.csproj /P:Configuration=Release
-robocopy .\VStats-plugin\bin\Release\ .\Release\plugin *.ini
-robocopy .\VStats-plugin\bin\Release\ .\Release\plugin\VStats *.dll /xf ScriptHookVDotNet.dll
+C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe .\webscripthook-plugin\WebScriptHook-plugin.csproj /P:Configuration=Release
+robocopy .\webscripthook-plugin\bin\Release\ .\Release\WebScriptHook *.ini *.dll /xf ScriptHookVDotNet.dll
 rem Build server
-cd VStats-server-go
-copy ..\VStats-plugin\VStats.ini .\VStats.ini
-go build 
+cd webscripthook-server
+copy ..\webscripthook-plugin\WebScriptHook.ini .\WebScriptHook.ini
+go build
 cd ..
-robocopy .\VStats-server-go\ .\Release\server /E /xf *.go build.bat
+robocopy .\webscripthook-server\ .\Release\WebScriptHook /E /xf *.go build.bat
 rem Copy license and readme
 copy README.md .\Release\README.txt
 copy LICENSE .\Release\LICENSE.txt

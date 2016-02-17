@@ -186,4 +186,4 @@ FakesAssemblies/
 *.userprefs
 
 # Project specific files
-/VStats-server-go/*.exe
+/webscripthook-server/*.exe
