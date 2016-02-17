@@ -44,7 +44,7 @@ POST /input
 {
 	"Cmd": "native",
 	"Arg": "GET_ENTITY_HEALTH", <- Name or hash of the native function
-	"Args": ["void", 2]  <- Return type (string), native function arguments (int/float/string/bool)
+	"Args": ["int", 2]  <- Return type (a string), native function arguments (an int/float/string/bool)
 }
 ```
 - See [the wiki page](https://github.com/LibertyLocked/webscripthook/wiki) for details
