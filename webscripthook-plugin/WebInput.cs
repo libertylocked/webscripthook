@@ -7,8 +7,10 @@ using GTA;
 using GTA.Math;
 using GTA.Native;
 
-namespace VStats_plugin
+namespace WebScriptHook
 {
+    delegate object WebFunction(string arg, params object[] args);
+
     class WebInput
     {
         public string Cmd { get; set; } 

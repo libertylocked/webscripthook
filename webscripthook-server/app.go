@@ -35,8 +35,7 @@ func getHandlers() *mux.Router {
 }
 
 func printCredits() {
-	fmt.Println("VStats web server by libertylocked")
-	fmt.Println("To pull the JSON, use /pull handle")
+	fmt.Println("WebScriptHook server by libertylocked")
 	fmt.Println("See README for details")
 	fmt.Println()
 }

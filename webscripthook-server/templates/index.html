@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>VStats web server</title>
+  <title>WebScriptHook Server</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="/static/bootstrap/css/bootstrap-theme.min.css">
@@ -29,7 +29,7 @@
     setTimeout(update, 500);
   }
   function checkLatest() {
-    $.get("https://api.github.com/repos/LibertyLocked/VStats/releases/latest",
+    $.get("https://api.github.com/repos/LibertyLocked/webscripthook/releases/latest",
     function(data) {
       $("#currVer").text(VERSION);
       if (VERSION == data["tag_name"]) {
@@ -44,7 +44,7 @@
 <body>
   <div class="container">
     <div class="page-header">
-      <h1 style="color: blue">VStats Web Server</h1>
+      <h1 style="color: blue">WebScriptHook Server Dashboard</h1>
     </div>
     <h3>Select a skin to start!</h3>
   </div>
@@ -54,7 +54,7 @@
       <a type="button" class="btn btn-default btn-lg btn-block" href='/skins/{{ $key }}/'>{{ $key }}</a>
       {{ end }}
     </ul>
-    <p style="text-align: right"><a href="https://github.com/LibertyLocked/VStats/wiki/Skin-repo">Get more skins</a></p>
+    <p style="text-align: right"><a href="https://github.com/LibertyLocked/webscripthook/wiki/Skin-repo">Get more skins</a></p>
   </div>
   <br>
   <div class="container" id="stats">
@@ -62,7 +62,7 @@
   </div>
   <div class="container" style="margin-top: 20px">
     <p>Version: <span id="currVer">Checking...</span> <span id="remoteVer"></span></p>
-    <p id="creditsText"><em>Created by libertylocked. All rights reserved.</em> Skins are owned by their respective authors. <a href="https://github.com/libertylocked/VStats">View this project on GitHub</a></p>
+    <p id="creditsText"><em>Created by libertylocked. All rights reserved.</em> Skins are owned by their respective authors. <a href="https://github.com/libertylocked/webscripthook">View this project on GitHub</a></p>
   </div>
 </body>
 </html>

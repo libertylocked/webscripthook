@@ -7,7 +7,7 @@ using GTA;
 using GTA.Math;
 using GTA.Native;
 
-namespace VStats_plugin
+namespace WebScriptHook
 {
     public struct GameData
     {

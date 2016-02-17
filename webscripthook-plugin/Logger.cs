@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace VStats_plugin
+namespace WebScriptHook
 {
     public static class Logger
     {
@@ -15,7 +15,7 @@ namespace VStats_plugin
         {
             if (Enable)
             {
-                File.AppendAllText(@".\scripts\VStats.log", DateTime.Now + " : " + message + Environment.NewLine);
+                File.AppendAllText(@".\scripts\WebScriptHook.log", DateTime.Now + " : " + message + Environment.NewLine);
             }
         }
     }

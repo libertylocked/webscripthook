@@ -8,7 +8,7 @@ using GTA.Math;
 using GTA.Native;
 using Newtonsoft.Json;
 
-namespace VStats_plugin
+namespace WebScriptHook
 {
     class Commands
     {

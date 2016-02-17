@@ -10,7 +10,7 @@ import (
 
 func getPort() string {
 	log.Println("Reading config")
-	filebytes, _ := ioutil.ReadFile("VStats.ini")
+	filebytes, _ := ioutil.ReadFile("WebScriptHook.ini")
 	cfgStr := string(filebytes)
 	fmt.Println(cfgStr)
 	cfg := struct {

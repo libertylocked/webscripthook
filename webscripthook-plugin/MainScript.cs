@@ -1,20 +1,13 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using GTA;
 using Newtonsoft.Json;
 using WebSocketSharp;
 
-namespace VStats_plugin
+namespace WebScriptHook
 {
     class MainScript : Script
     {
@@ -61,7 +54,18 @@ namespace VStats_plugin
 
         private void ParseConfig()
         {
-            var settings = ScriptSettings.Load(@".\scripts\VStats.ini");
+            ScriptSettings settings;
+            string path1 = @".\scripts\WebScriptHook.ini";
+            string pathFallback = @".\scripts\WebScriptHook\WebScriptHook.ini";
+            if (File.Exists(path1))
+            {
+                settings = ScriptSettings.Load(path1);
+            }
+            else
+            {
+                // fallback
+                settings = ScriptSettings.Load(pathFallback);
+            }
             string port = settings.GetValue("Core", "PORT", "25555");
             int interval = settings.GetValue("Core", "INTERVAL", 10);
             Logger.Enable = settings.GetValue("Core", "LOGGING", false);
