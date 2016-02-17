@@ -60,7 +60,6 @@
     <Compile Include="Commands.cs" />
     <Compile Include="FunctionConvert.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="WebFunction.cs" />
     <Compile Include="WebInput.cs" />
     <Compile Include="GameData.cs" />
     <Compile Include="MainScript.cs" />
