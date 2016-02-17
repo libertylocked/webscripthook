@@ -1,41 +1,57 @@
-# VStats plugin + server
+# WebScriptHook plugin + server
 Created by libertylocked
 
-Real-time GTAV in-game data for your second screen experience. Includes server and plugin.
-Inspired by [ETS2 Telemetry Server](https://github.com/Funbit/ets2-telemetry-server)!
+Providing client-side scripts with a REST API for GTAV. Includes server and plugin.
+Inspired by [ETS2 Telemetry Server](https://github.com/Funbit/ets2-telemetry-server)
 
 # Installation
-#### Plugin
-- You need [Script Hook V .NET](https://github.com/crosire/scripthookvdotnet/tree/master) and all its required runtimes
-- Extract the plugin files to "GTAV/scripts"
- - The configuration file should be at GTAV/scripts/VStats.ini
- - The DLLs should be at GTAV/scripts/VStats/*.dll
+#### Requirements
+- [Script Hook V](http://www.dev-c.com/gtav/scripthookv)
+- [Script Hook V .NET](https://github.com/crosire/scripthookvdotnet)
+- [.NET Framework 4.5.2](https://www.microsoft.com/download/details.aspx?id=42642)
+- [Visual C++ Redistributable for Visual Studio 2013 x64](https://www.microsoft.com/download/details.aspx?id=40784)
+
+#### WebScriptHook
+- Extract "WebScriptHook" folder to "GTAV/scripts"
+ - The configuration file should be at GTAV/scripts/WebScriptHook/WebScriptHook.ini
+ - The DLLs should be at GTAV/scripts/WebScriptHook/*.dll
+ - The server exe should be at GTAV/scripts/WebScriptHook/webscripthook-server.exe
+- You need to allow "webscripthook-server.exe" to communicate through firewall
 - Run the game
 
-#### Server
-- You can really just extract the server files anywhere
-- Run "VStats-server-go.exe"
-- You need to allow the program to communicate through firewall
-- The default port is **25555**. Can be changed in config (see **Other notes**).
-- Now open your browser and go to **http://localhost:25555** You should see the home page.
-- To access the page from devices on your LAN, replace "localhost" above with the address of your PC. Google ["How to find my LAN IP"](https://www.google.com/search?q=How%20to%20find%20my%20LAN%20IP) if you don't know how to do that.
+# WebScriptHook apps
+#### Running a web app
+- Start the game
+- Run "webscripthook-server.exe"
+ - You need to allow the program to communicate through firewall
+ - The default port is **25555**. Can be changed in config (restart game and the server to apply)
+- Open your browser and go to **http://localhost:25555** You should see the home page
+- To access the page from devices on your LAN, replace "localhost" above with the address of your PC. Google ["How to find my LAN IP"](https://www.google.com/search?q=How%20to%20find%20my%20LAN%20IP) if you don't know how to do that
 
-# Custom skins
-#### Apply a skin
-- Drop the folder of your custom skins under "/skins" folder
-- If done correctly, the index page of the skin should be at **/skins/\<skin name\>/index.html**
-- Refresh 
+#### Install a web app
+- Drop the folder of a WebScriptHook app under "/apps" folder
+ - If done correctly, the index page of the app should be at **/apps/\<app name\>/index.html**
+- Refresh the webpage
 
-#### Make your own skin
-- You need to make some AJAX calls to...
-- Get game data from "/pull"
-- Get plugin connection status from "/connected"
-- You can also get a dummy data from "/dummy" for testing purposes
-- You can send certain inputs to the game. See [the wiki page](https://github.com/LibertyLocked/VStats/wiki) for details
+#### WebScriptHook REST API
+WebScriptHook provides a REST API that allows you to pull real-time data from the game, as well as calling native functions remotely!
+- Pulling some real-time data in JSON format
+```
+GET /pull
+```
+- Calling a native function
+```
+POST /input
+{
+	"Cmd": "native",
+	"Arg": "GET_ENTITY_HEALTH", <- Name or hash of the native function
+	"Args": ["void", 2]  <- Return type (string), native function arguments (int/float/string/bool)
+}
+```
+- See [the wiki page](https://github.com/LibertyLocked/webscripthook/wiki) for details
 
 # Other notes
 - Whether you start the game first or the server first does not matter
-- If you want to change port, make sure you modify "VStats.ini" for **both the plugin and the server**
 - If things broke, check "GTAV/ScriptHookVDotNet-2016-01-19.log" (replace the date with your current date) for errors
 
 # Screenshots
@@ -47,4 +63,4 @@ Inspired by [ETS2 Telemetry Server](https://github.com/Funbit/ets2-telemetry-ser
 
 # Video
 [![Video1](http://img.youtube.com/vi/-LCbX3b3LsU/0.jpg)](http://www.youtube.com/watch?v=-LCbX3b3LsU)
-> Have fun making your own skins! <img src="https://github.com/favicon.ico" width="32"> Pull requests are welcome
+> Have fun making your own apps! <img src="https://github.com/favicon.ico" width="32"> Pull requests are welcome
