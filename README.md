@@ -1,4 +1,6 @@
 # WebScriptHook plugin + server
+[![Build status](https://ci.appveyor.com/api/projects/status/u0q7xo205ls01qmq?svg=true)](https://ci.appveyor.com/project/LibertyLocked/webscripthook)
+
 Created by libertylocked
 
 Providing client-side scripts with a REST API for GTAV. Includes server and plugin.
