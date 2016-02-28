@@ -15,6 +15,7 @@ func getPort() string {
 	fmt.Println(cfgStr)
 	cfg := struct {
 		Core struct {
+			HOST     string
 			PORT     string
 			INTERVAL int
 			LOGGING  bool
