@@ -66,12 +66,13 @@ namespace WebScriptHook
                 // fallback
                 settings = ScriptSettings.Load(pathFallback);
             }
+            string host = settings.GetValue("Core", "HOST", "localhost");
             string port = settings.GetValue("Core", "PORT", "25555");
             int interval = settings.GetValue("Core", "INTERVAL", 10);
             Logger.Enable = settings.GetValue("Core", "LOGGING", false);
 
             //url = "http://localhost:" + port + "/push";
-            url = "ws://localhost:" + port + "/pushws";
+            url = "ws://" + host + ":" + port + "/pushws";
             sleepTime = interval;
         }
 
