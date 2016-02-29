@@ -88,16 +88,6 @@ namespace WebScriptHook
             return null;
         }
 
-        public static object SetBlackout(string arg, object[] args)
-        {
-            bool on;
-            if (bool.TryParse(arg, out on))
-            {
-                World.SetBlackout(on);
-            }
-            return null;
-        }
-
         public static object ChangeTime(string arg, object[] args)
         {
             TimeSpan ts;

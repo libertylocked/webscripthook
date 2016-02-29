@@ -16,7 +16,6 @@ namespace WebScriptHook
             {"wantedlevel", Commands.SetWantedLevel},
             {"health", Commands.SetPlayerHealth},
             {"armor", Commands.SetPlayerArmor},
-            {"blackout", Commands.SetBlackout},
             {"time", Commands.ChangeTime},
             {"weather", Commands.ChangeWeather},
             {"maxammo", Commands.MaxAmmo},
