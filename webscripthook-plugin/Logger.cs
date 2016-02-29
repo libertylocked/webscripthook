@@ -7,7 +7,7 @@ using System.IO;
 
 namespace WebScriptHook
 {
-    public static class Logger
+    class Logger
     {
         public static bool Enable = false;
 
