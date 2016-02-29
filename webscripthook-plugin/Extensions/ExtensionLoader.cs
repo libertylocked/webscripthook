@@ -43,8 +43,15 @@ namespace WebScriptHook.Extensions
                 {
                     // The string used to identify this extension
                     string id = Path.GetFileNameWithoutExtension(fileName) + "." + pair.Item1;
-                    extMap.Add(id, pair.Item2);
-                    Logger.Log("Loaded extension: " + id);
+                    if (extMap.ContainsKey(id))
+                    {
+                        Logger.Log("Failed to load extension (extension signature collision): " + id);
+                    }
+                    else
+                    {
+                        extMap.Add(id, pair.Item2);
+                        Logger.Log("Extention loaded: " + id);
+                    }
                 }
             }
             return extMap;
