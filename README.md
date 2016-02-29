@@ -51,6 +51,19 @@ POST /input
 ```
 - See [the wiki page](https://github.com/LibertyLocked/webscripthook/wiki) for details
 
+# WebScriptHook extensions
+#### Writing an extension
+- You can write your own extensions to handle inputs sent through the web
+- Subclass WebScriptHook.Extensions.Extension and override HandleCalled method
+- Your extension can also send stuff back to the caller
+- You extension instance is persistent, which means it can have state!
+- See [the wiki page](https://github.com/LibertyLocked/webscripthook/wiki) for details
+
+#### Calling an extension
+- POST to /input with cmd "extension"
+- Arg needs to be "filename-without-dll.namespace.classname". e.g. extension-examples.ExampleExtensions.MyExtension
+- Args will be used to call the extension
+
 # Other notes
 - Whether you start the game first or the server first does not matter
 - If things broke, check "GTAV/ScriptHookVDotNet-2016-01-19.log" (replace the date with your current date) for errors
