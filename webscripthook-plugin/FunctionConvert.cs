@@ -26,6 +26,7 @@ namespace WebScriptHook
             {"showsavemenu", Commands.ShowSaveMenu},
             {"echo", Commands.Echo},
             {"native", Commands.CallNative},
+            {"extension", Commands.InvokeExtension},
         };
 
         /// <summary>
