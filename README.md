@@ -52,15 +52,20 @@ POST /input
 - See [the wiki page](https://github.com/LibertyLocked/webscripthook/wiki) for details
 
 # WebScriptHook extensions
-#### Writing an extension
-- You can write your own extensions to handle inputs sent through the web
-- Subclass WebScriptHook.Extensions.Extension and override HandleCalled method
-- Your extension can also send stuff back to the caller
-- You extension instance is persistent, which means it can have state!
-- Put the extension dll files under GTAV/scripts/WebScriptHook/extensions and they will be automatically loaded when WebScriptHook starts
+#### Installing an extension
+- Put the extension dll files under "/extensions" folder
+ - WebScriptHook searches for assemblies recursively, so create subfolders if you wish
+- Extensions will be automatically loaded when WebScriptHook starts
+
+#### Creating an extension
+- You can write your own extensions to handle inputs sent through web
+- Subclass **WebScriptHook.Extensions.Extension** and override HandleCall method, which is invoked whenever your extension is called through web
+- Implement **WebScriptHook.Extensions.ITickable** and your extension will be ticked every frame
+- Your extension can also send stuff back to the caller, whenever HandleCall is called
+- It's possible to convert an existing ScriptHookVDotNet script to a WebScriptHook extension
 - See [the wiki page](https://github.com/LibertyLocked/webscripthook/wiki) for details
 
-#### Calling an extension
+#### Calling an extension through REST API
 - POST to /input with cmd "extension"
 - Arg needs to be "filename-without-dll.namespace.classname". e.g. extension-examples.ExampleExtensions.MyExtension
 - Args will be used to call the extension
