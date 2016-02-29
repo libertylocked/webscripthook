@@ -57,6 +57,7 @@ POST /input
 - Subclass WebScriptHook.Extensions.Extension and override HandleCalled method
 - Your extension can also send stuff back to the caller
 - You extension instance is persistent, which means it can have state!
+- Put the extension dll files under GTAV/scripts/WebScriptHook/extensions and they will be automatically loaded when WebScriptHook starts
 - See [the wiki page](https://github.com/LibertyLocked/webscripthook/wiki) for details
 
 #### Calling an extension
