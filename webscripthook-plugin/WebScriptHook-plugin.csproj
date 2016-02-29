@@ -61,6 +61,7 @@
     <Compile Include="Extensions\Extension.cs" />
     <Compile Include="Extensions\ExtensionLoader.cs" />
     <Compile Include="Extensions\ExtensionManager.cs" />
+    <Compile Include="Extensions\ITickable.cs" />
     <Compile Include="FunctionConvert.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="WebInput.cs" />

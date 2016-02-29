@@ -38,6 +38,9 @@ namespace WebScriptHook
         {
             cacheData = GameData.GetData();
             
+            // Tick extension manager
+            ExtensionManager.Instance.Update();
+
             // Check for inputs
             WebInput input;
             while (inputQueue.TryDequeue(out input))
