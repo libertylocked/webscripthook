@@ -60,7 +60,7 @@ POST /input
 #### Creating an extension
 - You can write your own extensions to handle inputs sent through web
 - Subclass **WebScriptHook.Extensions.Extension** and override HandleCall method, which is invoked whenever your extension is called through web
-- Implement **WebScriptHook.Extensions.ITickable** and your extension will be ticked every frame
+- Implement **WebScriptHook.Extensions.ITickable** if you want your extension to be ticked every frame
 - Your extension can also send stuff back to the caller, whenever HandleCall is called
 - It's possible to convert an existing ScriptHookVDotNet script to a WebScriptHook extension
 - See [the wiki page](https://github.com/LibertyLocked/webscripthook/wiki) for details
