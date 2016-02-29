@@ -27,6 +27,11 @@ namespace WebScriptHook.Extensions
             return extensions;
         }
 
+        /// <summary>
+        /// Loads all extensions from a directory
+        /// </summary>
+        /// <param name="dirName">Directory to search the extensions in</param>
+        /// <returns>A map from extension identifier string to the extension instance</returns>
         public static Dictionary<string, Extension> LoadAllExtensionsFromDir(string dirName)
         {
             var extMap = new Dictionary<string, Extension>();

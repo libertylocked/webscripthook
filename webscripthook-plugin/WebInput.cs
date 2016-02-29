@@ -11,7 +11,7 @@ namespace WebScriptHook
 {
     delegate object WebFunction(string arg, params object[] args);
 
-    public class WebInput
+    class WebInput
     {
         public string Cmd { get; set; } 
         public string Arg { get; set; }
