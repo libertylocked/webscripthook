@@ -9,7 +9,7 @@ using GTA.Native;
 
 namespace WebScriptHook
 {
-    public struct GameData
+    struct GameData
     {
         // Game and world
         public TimeSpan GameTime { get; set; }

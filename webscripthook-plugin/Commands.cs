@@ -7,6 +7,7 @@ using GTA;
 using GTA.Math;
 using GTA.Native;
 using Newtonsoft.Json;
+using WebScriptHook.Extensions;
 
 namespace WebScriptHook
 {
@@ -232,6 +233,11 @@ namespace WebScriptHook
                 // because int is mostly used as handles, this is the default type
                 return Function.Call<int>(nativeHash, nativeArgs.ToArray());
             }
+        }
+
+        public static object InvokeExtension(string arg, object[] args)
+        {
+            return ExtensionManager.Instance.CallExtension(arg, args);
         }
     }
 }

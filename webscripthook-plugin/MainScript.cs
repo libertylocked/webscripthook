@@ -5,6 +5,7 @@ using System.IO;
 using System.Threading;
 using GTA;
 using Newtonsoft.Json;
+using WebScriptHook.Extensions;
 using WebSocketSharp;
 
 namespace WebScriptHook
@@ -28,6 +29,9 @@ namespace WebScriptHook
             this.Tick += OnTick;
 
             CreateWorkerThread();
+
+            // Create Extension Manager instance
+            ExtensionManager.CreateInstance();
         }
 
         private void OnTick(object sender, EventArgs e)
