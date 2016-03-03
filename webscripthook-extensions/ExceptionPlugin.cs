@@ -7,11 +7,15 @@ using WebScriptHook.Extensions;
 
 namespace ExtensionExamples
 {
-    class ExceptionTestPlugin : Extension, ITickable
+    /// <summary>
+    /// Throws an exception when called with argument "throw".
+    /// Used to test WebScriptHook exception handling.
+    /// </summary>
+    class ExceptionPlugin : Extension, ITickable
     {
         bool enable = false;
 
-        public ExceptionTestPlugin() { }
+        public ExceptionPlugin() { }
 
         public void Tick()
         {

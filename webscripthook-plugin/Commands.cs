@@ -240,7 +240,7 @@ namespace WebScriptHook
 
         public static object GetExtensionList(string arg, object[] args)
         {
-            return ExtensionManager.Instance.ExtensionNames;
+            return ExtensionManager.Instance.ExtensionIDs;
         }
     }
 }

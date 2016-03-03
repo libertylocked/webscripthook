@@ -15,18 +15,18 @@ namespace WebScriptHook.Extensions
         /// </summary>
         /// <param name="fileName">Filename of the assembly containing extensions</param>
         /// <returns>A list containing extension type and the extension instance</returns>
-        public static List<Tuple<Type, Extension>> LoadExtensionsFromAssembly(string fileName)
+        public static List<Extension> LoadExtensionsFromAssembly(string fileName)
         {
-            var extensions = new List<Tuple<Type, Extension>>();
+            var extensions = new List<Extension>();
             try
             {
                 var asm = Assembly.LoadFrom(fileName);
-                var types = asm.GetTypes().Where(t => t.BaseType == typeof(Extension));
+                var types = asm.GetTypes().Where(t => t.IsSubclassOf(typeof(Extension)));
                 foreach (var type in types)
                 {
                     try
                     {
-                        extensions.Add(new Tuple<Type, Extension>(type, Activator.CreateInstance(type) as Extension));
+                        extensions.Add(Activator.CreateInstance(type) as Extension);
                     }
                     catch (Exception ex)
                     {
@@ -56,17 +56,17 @@ namespace WebScriptHook.Extensions
                 foreach (var fileName in fileNames)
                 {
                     var loadedExtensions = LoadExtensionsFromAssembly(fileName);
-                    foreach (var pair in loadedExtensions)
+                    foreach (var ext in loadedExtensions)
                     {
                         // The string used to identify this extension
-                        string id = Path.GetFileNameWithoutExtension(fileName) + "." + pair.Item1;
+                        string id = ext.GetExtensionID();
                         if (extMap.ContainsKey(id))
                         {
                             Logger.Log("Failed to load extension (extension signature collision): " + id);
                         }
                         else
                         {
-                            extMap.Add(id, pair.Item2);
+                            extMap.Add(id, ext);
                             Logger.Log("Extention loaded: " + id);
                         }
                     }

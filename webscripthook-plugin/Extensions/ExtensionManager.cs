@@ -22,7 +22,7 @@ namespace WebScriptHook.Extensions
         /// <summary>
         /// Gets the names of loaded extensions
         /// </summary>
-        public string[] ExtensionNames
+        public string[] ExtensionIDs
         {
             get { return extMap.Keys.ToArray(); }
         }

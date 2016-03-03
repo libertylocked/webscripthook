@@ -9,6 +9,10 @@ using WebScriptHook.Extensions;
 
 namespace ExtensionExamples
 {
+    /// <summary>
+    /// A tickable extension that is ticked every frame by WebScriptHook.
+    /// Turns the clock on if arg[0] is "on" when called.
+    /// </summary>
     class ClockPlugin : Extension, ITickable
     {
         bool on = false;
