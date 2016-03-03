@@ -9,7 +9,7 @@ namespace WebScriptHook.Extensions
 {
     class ExtensionManager
     {
-        static ExtensionManager instance = new ExtensionManager();
+        static ExtensionManager instance;
 
         Dictionary<string, Extension> extMap;
         List<Extension> tickableExtensions = new List<Extension>();
