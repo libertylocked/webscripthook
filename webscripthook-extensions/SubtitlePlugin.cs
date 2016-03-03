@@ -9,11 +9,11 @@ using GTA;
 
 namespace ExtensionExamples
 {
-    public class SubtitleExtension : Extension
+    public class SubtitlePlugin : Extension
     {
         int count = 0;
 
-        public SubtitleExtension() { }
+        public SubtitlePlugin() { }
 
         public override object HandleCall(object[] args)
         {

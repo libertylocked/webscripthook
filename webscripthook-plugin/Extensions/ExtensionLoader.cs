@@ -18,11 +18,26 @@ namespace WebScriptHook.Extensions
         public static List<Tuple<Type, Extension>> LoadExtensionsFromAssembly(string fileName)
         {
             var extensions = new List<Tuple<Type, Extension>>();
-            var asm = Assembly.LoadFrom(fileName);
-            var types = asm.GetTypes().Where(t => t.BaseType == typeof(Extension));
-            foreach (var type in types)
+            try
             {
-                extensions.Add(new Tuple<Type, Extension>(type, Activator.CreateInstance(type) as Extension));
+                var asm = Assembly.LoadFrom(fileName);
+                var types = asm.GetTypes().Where(t => t.BaseType == typeof(Extension));
+                foreach (var type in types)
+                {
+                    try
+                    {
+                        extensions.Add(new Tuple<Type, Extension>(type, Activator.CreateInstance(type) as Extension));
+                    }
+                    catch (Exception ex)
+                    {
+                        // catch exceptions thrown by individual extensions in this assembly
+                        Logger.Log("Failed to load " + type + " from " + fileName + ": " + ex);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Log("Failed to load assembly " + fileName + ": " + ex);
             }
             return extensions;
         }
@@ -35,24 +50,31 @@ namespace WebScriptHook.Extensions
         public static Dictionary<string, Extension> LoadAllExtensionsFromDir(string dirName)
         {
             var extMap = new Dictionary<string, Extension>();
-            var fileNames = Directory.GetFiles(dirName, "*.dll", SearchOption.AllDirectories);
-            foreach (var fileName in fileNames)
+            try
             {
-                var loadedExtensions = LoadExtensionsFromAssembly(fileName);
-                foreach (var pair in loadedExtensions)
+                var fileNames = Directory.GetFiles(dirName, "*.dll", SearchOption.AllDirectories);
+                foreach (var fileName in fileNames)
                 {
-                    // The string used to identify this extension
-                    string id = Path.GetFileNameWithoutExtension(fileName) + "." + pair.Item1;
-                    if (extMap.ContainsKey(id))
+                    var loadedExtensions = LoadExtensionsFromAssembly(fileName);
+                    foreach (var pair in loadedExtensions)
                     {
-                        Logger.Log("Failed to load extension (extension signature collision): " + id);
-                    }
-                    else
-                    {
-                        extMap.Add(id, pair.Item2);
-                        Logger.Log("Extention loaded: " + id);
+                        // The string used to identify this extension
+                        string id = Path.GetFileNameWithoutExtension(fileName) + "." + pair.Item1;
+                        if (extMap.ContainsKey(id))
+                        {
+                            Logger.Log("Failed to load extension (extension signature collision): " + id);
+                        }
+                        else
+                        {
+                            extMap.Add(id, pair.Item2);
+                            Logger.Log("Extention loaded: " + id);
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Logger.Log("Failed to load extensions in " + dirName + ": " + ex);
             }
             return extMap;
         }

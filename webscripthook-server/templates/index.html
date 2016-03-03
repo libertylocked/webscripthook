@@ -14,6 +14,7 @@
   $(document).ready(function(){
     update();
     checkLatest();
+    checkExtensionList();
   });
   function update() {
     $.get("/connected", callback);
@@ -39,6 +40,27 @@
       }
     });
   }
+  function checkExtensionList() {
+    var stringified = JSON.stringify({"Cmd": "extensionlist"});
+    $.ajax({
+      url: '/input',
+      type: 'post',
+      dataType: 'json',
+      success: null,
+      data: stringified,
+      timeout: 2000,
+      success: function(data) {
+        for(var i = 0; i < data.length; i++) {
+          var name = data[i];
+          $("#extensionsList").append("<li class='list-group-item col-md-6'>" + name + "</li>")
+          console.log(name);
+        }
+      },
+      error: function() {
+        $("#extensionsList").html("<li class='list-group-item'>Failed to fetch extension list</li>")
+      },
+    });
+  }
   </script>
 </head>
 <body>
@@ -59,6 +81,11 @@
   <br>
   <div class="container" id="stats">
     <p>Plugin status: <span id="pluginStatus"></span></p>
+  </div>
+  <div class="container">
+    <h4>Extensions loaded:</h4>
+    <ul class="list-group" id="extensionsList">
+    </ul>
   </div>
   <div class="container" style="margin-top: 20px">
     <p>Version: <span id="currVer">Checking...</span> <span id="remoteVer"></span></p>

@@ -47,7 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SubtitleExtension.cs" />
+    <Compile Include="ExceptionTestPlugin.cs" />
+    <Compile Include="SubtitlePlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ClockPlugin.cs" />
   </ItemGroup>

@@ -26,6 +26,7 @@ namespace WebScriptHook
             {"echo", Commands.Echo},
             {"native", Commands.CallNative},
             {"extension", Commands.InvokeExtension},
+            {"extensionlist", Commands.GetExtensionList},
         };
 
         /// <summary>

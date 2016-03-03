@@ -229,5 +229,10 @@ namespace WebScriptHook
         {
             return ExtensionManager.Instance.CallExtension(arg, args);
         }
+
+        public static object GetExtensionList(string arg, object[] args)
+        {
+            return ExtensionManager.Instance.ExtensionNames;
+        }
     }
 }

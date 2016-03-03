@@ -12,11 +12,19 @@ namespace WebScriptHook.Extensions
         static ExtensionManager instance = new ExtensionManager();
 
         Dictionary<string, Extension> extMap;
-        List<ITickable> tickables = new List<ITickable>();
+        List<Extension> tickableExtensions = new List<Extension>();
 
         public static ExtensionManager Instance
         {
             get { return instance; }
+        }
+
+        /// <summary>
+        /// Gets the names of loaded extensions
+        /// </summary>
+        public string[] ExtensionNames
+        {
+            get { return extMap.Keys.ToArray(); }
         }
 
         public ExtensionManager()
@@ -29,7 +37,7 @@ namespace WebScriptHook.Extensions
             {
                 if (ext is ITickable)
                 {
-                    tickables.Add(ext as ITickable);
+                    tickableExtensions.Add(ext);
                     Logger.Log("Found tickable extension: " + ext.GetType());
                 }
             }
@@ -38,9 +46,17 @@ namespace WebScriptHook.Extensions
         public void Update()
         {
             // Tick all tickable extensions
-            foreach (var t in tickables)
+            for (int i = tickableExtensions.Count - 1; i >= 0; i--)
             {
-                t.Tick();
+                try
+                {
+                    (tickableExtensions[i] as ITickable).Tick();
+                }
+                catch (Exception ex)
+                {
+                    DropExtension(tickableExtensions[i]);
+                    Logger.Log(ex);
+                }
             }
         }
 
@@ -61,6 +77,21 @@ namespace WebScriptHook.Extensions
         {
             instance = new ExtensionManager();
             return instance;
+        }
+
+        private void DropExtension(Extension extension)
+        {
+            // Drop from being ticked
+            if (extension != null && tickableExtensions.Contains(extension))
+            {
+                tickableExtensions.Remove(extension);
+            }
+
+            // Drop from being called
+            foreach (var item in extMap.Where(pair => pair.Value == extension).ToList())
+            {
+                extMap.Remove(item.Key);
+            }
         }
     }
 }
