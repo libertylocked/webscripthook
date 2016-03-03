@@ -218,6 +218,14 @@ namespace WebScriptHook
             {
                 return Function.Call<string>(nativeHash, nativeArgs.ToArray());
             }
+            else if (retType == "Vector2")
+            {
+                return Function.Call<Vector2>(nativeHash, nativeArgs.ToArray());
+            }
+            else if (retType == "Vector3")
+            {
+                return Function.Call<Vector3>(nativeHash, nativeArgs.ToArray());
+            }
             else // Int32
             {
                 // because int is mostly used as handles, this is the default type
