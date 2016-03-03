@@ -50,6 +50,7 @@
       data: stringified,
       timeout: 2000,
       success: function(data) {
+        $("#extensionsTitle").text(data.length + " extensions loaded")
         for(var i = 0; i < data.length; i++) {
           var name = data[i];
           $("#extensionsList").append("<li class='list-group-item col-md-6'>" + name + "</li>")
@@ -57,7 +58,7 @@
         }
       },
       error: function() {
-        $("#extensionsList").html("<li class='list-group-item'>Failed to fetch extension list</li>")
+        $("#extensionsTitle").html("<span style='color:red'>Failed to fetch extension list</span>")
       },
     });
   }
@@ -83,7 +84,7 @@
     <p>Plugin status: <span id="pluginStatus"></span></p>
   </div>
   <div class="container">
-    <h4>Extensions loaded:</h4>
+    <h4 id="extensionsTitle"></h4>
     <ul class="list-group" id="extensionsList">
     </ul>
   </div>
