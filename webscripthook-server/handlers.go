@@ -21,7 +21,7 @@ type input struct {
 
 var dataCache = "NO_DATA"
 var pluginConnected = false
-var ch = make(chan input, 10)                       // input channel, used to send inputs from web to game
+var ch = make(chan input, 50)                       // input channel, used to send inputs from web to game
 var retChMap = make(map[uuid.UUID]chan interface{}) // return map, used for plugin return values
 
 func handleGetJSON(w http.ResponseWriter, r *http.Request) {

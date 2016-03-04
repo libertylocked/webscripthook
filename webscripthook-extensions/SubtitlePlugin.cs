@@ -13,7 +13,7 @@ namespace ExtensionExamples
     /// A basic extension that displays subtitles.
     /// Not a tickable.
     /// </summary>
-    public class SubtitlePlugin : Extension
+    class SubtitlePlugin : Extension
     {
         int count = 0;
 

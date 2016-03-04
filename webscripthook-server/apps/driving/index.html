@@ -1,0 +1,79 @@
+<html>
+<head>
+  <title>Test dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/bootstrap/css/bootstrap-theme.min.css">
+  <script src="/static/jquery-1.11.3.min.js"></script>
+  <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+  <script>
+  var enable = false;
+
+  $(document).ready(function(){
+    $("#btnEnable").click(function() {
+      enable = true;
+      sendInput("on", null, null);
+    });
+    $("#btnDisable").click(function() {
+      enable = false;
+      sendInput("off", null, null);
+    });
+  });
+  window.ondevicemotion = function(event) {
+    if (enable) {
+      var accelerationX = event.accelerationIncludingGravity.x;
+      var accelerationY = event.accelerationIncludingGravity.y;
+      var accelerationZ = event.accelerationIncludingGravity.z;
+
+      var bias = -accelerationY / 30; // can use some smoothing
+      bias = Math.min(Math.max(bias, -1), 1);
+      $("#bias").text(bias);
+      var progressValue = 50 - bias*200;
+      $('#biasProgress').css('left', progressValue+'%');
+      //$("#biasValue").text(progressValue.toFixed(0) + "%");
+      sendInput(bias.toString(), null, null);
+    }
+  }
+
+  function sendInput(arg, callback, errorCallback) {
+    var stringified = JSON.stringify({ "Cmd": "extension", "Arg" : "extension-examples.ExtensionExamples.DrivingPlugin", "Args" : [arg] });
+    $.ajax({
+      url: '/input',
+      type: 'post',
+      dataType: 'json',
+      success: null,
+      data: stringified,
+      timeout: 2000,
+      success: callback,
+      error: errorCallback,
+    });
+  }
+  </script>
+  <style>
+    #biasProgress {
+        position: relative;
+        left: 50%;
+        margin-left: -5%;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Driving Plugin</h1>
+  </div>
+  <div class="container">
+    <button type="button" class="btn btn-default" id="btnEnable">Enable</button>
+    <button type="button" class="btn btn-default" id="btnDisable">Disable</button>
+  </div>
+  <div class="container">
+    <h3 id="bias"></h3>
+    <div class="progress">
+      <div id="biasProgress" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 10%;">
+      </div>
+   </div>
+  </div>
+  <div class="container">
+    <button type="button" class="btn btn-default" id="btnBrake" style="float:left">Brake</button>
+    <button type="button" class="btn btn-default" id="btnGas" style="float:right">Gas</button>
+  </div>
+</body>
