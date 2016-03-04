@@ -15,9 +15,14 @@ namespace ExtensionExamples
     /// </summary>
     class DrivingPlugin : Extension, ITickable
     {
+        // Time to hold gas/brake once input is received.
+        // We do this because there's always going to be some lag/delay and 
+        // inputs won't be continuous between every frame
+        const float HOLD_TIME = 0.1f;
+
         bool enable = false;
         float steerBias = 0;
-        bool gas, brake;
+        float brakeTime = 0, accelerateTime = 0;
 
         public DrivingPlugin() { }
 
@@ -30,11 +35,25 @@ namespace ExtensionExamples
                 // Call VEHICLE::SET_VEHICLE_STEER_BIAS to steer the vehicle (-1 full right, 1 full left)
                 Function.Call(Hash.SET_VEHICLE_STEER_BIAS, veh, steerBias);
 
-                // Apply acceleration
-
+                // Apply acceleration by simulating input
+                if (accelerateTime > 0)
+                {
+                    Function.Call(Hash._0xE8A25867FBA3B05E, 2, 71, 1f); // 71 is INPUT_VEH_ACCELERATE
+                }
+                if (brakeTime > 0)
+                {
+                    Function.Call(Hash._0xE8A25867FBA3B05E, 2, 72, 1f); // 72 is INPUT_VEH_BRAKE
+                }
             }
-            gas = false;
-            brake = false;
+            // Decrement hold times
+            if (accelerateTime > 0)
+            {
+                accelerateTime -= Game.LastFrameTime;
+            }
+            if (brakeTime > 0)
+            {
+                brakeTime -= Game.LastFrameTime;
+            }
         }
 
         public override object HandleCall(object[] args)
@@ -57,11 +76,11 @@ namespace ExtensionExamples
                 }
                 else if (arg == "gas")
                 {
-                    gas = true;
+                    StartAccelerating();
                 }
                 else if (arg == "brake")
                 {
-                    brake = true;
+                    StartBraking();
                 }
                 else
                 {
@@ -79,6 +98,16 @@ namespace ExtensionExamples
 
             // Always return null
             return "Invalid arguments!";
+        }
+
+        void StartBraking()
+        {
+            brakeTime = HOLD_TIME;
+        }
+
+        void StartAccelerating()
+        {
+            accelerateTime = HOLD_TIME;
         }
     }
 }

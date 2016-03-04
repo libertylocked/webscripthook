@@ -8,6 +8,8 @@
   <script src="/static/bootstrap/js/bootstrap.min.js"></script>
   <script>
   var enable = false;
+  var gas = false;
+  var brake = false;
 
   $(document).ready(function(){
     $("#btnEnable").click(function() {
@@ -18,7 +20,33 @@
       enable = false;
       sendInput("off", null, null);
     });
+    $("#btnBrake").bind("touchstart", function(e){
+      brake = true;
+    });
+    $("#btnBrake").bind("touchend", function(e){
+      brake = false;
+    });
+    $("#btnGas").bind("touchstart", function(e){
+      gas = true;
+    });
+    $("#btnGas").bind("touchend", function(e){
+      gas = false;
+    });
+    updateGasBrake();
   });
+
+  function updateGasBrake() {
+    if (enable) {
+      if (gas) {
+        sendInput("gas", null, null);
+      }
+      if (brake) {
+        sendInput("brake", null, null);
+      }
+    }
+    setTimeout(updateGasBrake, 20);
+  }
+
   window.ondevicemotion = function(event) {
     if (enable) {
       var accelerationX = event.accelerationIncludingGravity.x;
@@ -73,7 +101,8 @@
    </div>
   </div>
   <div class="container">
-    <button type="button" class="btn btn-default" id="btnBrake" style="float:left">Brake</button>
-    <button type="button" class="btn btn-default" id="btnGas" style="float:right">Gas</button>
+    <button type="button" class="btn btn-lg btn-default" id="btnBrake" style="float:left">Brake<br>.</button>
+    <button type="button" class="btn btn-lg btn-default" id="btnGas" style="float:right">Gas<br>.</button>
+    <h4 id="touchState"></h4>
   </div>
 </body>
