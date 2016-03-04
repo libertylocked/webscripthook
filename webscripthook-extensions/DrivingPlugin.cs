@@ -66,13 +66,11 @@ namespace ExtensionExamples
                 {
                     enable = true;
                     UI.Notify("Mobile driving is on");
-                    return "Extension enabled";
                 }
                 else if (arg == "off")
                 {
                     enable = false;
                     UI.Notify("Mobile driving is off");
-                    return "Extension disabled";
                 }
                 else if (arg == "gas")
                 {
@@ -85,19 +83,12 @@ namespace ExtensionExamples
                 else
                 {
                     // Set bias
-                    if (float.TryParse(arg, out steerBias))
-                    {
-                        return null; // return null
-                    }
-                    else
-                    {
-                        return "Invalid bias input!";
-                    }
+                    if (float.TryParse(arg, out steerBias)) { }
                 }
             }
 
             // Always return null
-            return "Invalid arguments!";
+            return null;
         }
 
         void StartBraking()
