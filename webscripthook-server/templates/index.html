@@ -41,6 +41,8 @@
     });
   }
   function checkExtensionList() {
+    $("#extensionsTitle").text("Fetching extension list...")
+    $("#extensionsList").html("");
     var stringified = JSON.stringify({"Cmd": "extensionlist"});
     $.ajax({
       url: '/input',
@@ -50,7 +52,7 @@
       data: stringified,
       timeout: 2000,
       success: function(data) {
-        $("#extensionsTitle").text(data.length + " extensions loaded")
+        $("#extensionsTitle").html(data.length + " extensions loaded. <a href='#' onclick='checkExtensionList()'><i class='fa fa-refresh'></i></a>");
         for(var i = 0; i < data.length; i++) {
           var name = data[i];
           $("#extensionsList").append("<li class='list-group-item col-md-6'>" + name + "</li>")
@@ -58,7 +60,7 @@
         }
       },
       error: function() {
-        $("#extensionsTitle").html("<span style='color:red'>Failed to fetch extension list</span>")
+        $("#extensionsTitle").html("<span style='color:red'>Failed to fetch extension list. </span><a href='#' onclick='checkExtensionList()'><i class='fa fa-refresh'></i></a>")
       },
     });
   }
