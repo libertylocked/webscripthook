@@ -76,6 +76,7 @@ POST /input
 - If things broke, check "GTAV/ScriptHookVDotNet-2016-01-19.log" (replace the date with your current date) for errors
 
 # Screenshots
+<img src="/Images/driving.jpg">
 <img src="/Images/example0.png" width="360">
 <img src="/Images/example1.png" width="360">
 <img src="/Images/example2.png" width="360">
