@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>Test dashboard</title>
+  <title>Mobile Driving Plugin</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
   <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="/static/bootstrap/css/bootstrap-theme.min.css">
@@ -14,11 +14,11 @@
   $(document).ready(function(){
     $("#btnEnable").click(function() {
       enable = true;
-      sendInput("on", null, null);
+      sendInput("on");
     });
     $("#btnDisable").click(function() {
       enable = false;
-      sendInput("off", null, null);
+      sendInput("off");
     });
     $("#btnBrake").bind("touchstart", function(e){
       brake = true;
@@ -32,19 +32,34 @@
     $("#btnGas").bind("touchend", function(e){
       gas = false;
     });
-    updateGasBrake();
+    $("#btnRadioPrev").click(function() {
+      sendCommand("radio", "-1");
+    });
+    $("#btnRadioNext").click(function() {
+      sendCommand("radio", "1");
+    });
+    update();
   });
 
-  function updateGasBrake() {
+  function update() {
     if (enable) {
       if (gas) {
-        sendInput("gas", null, null);
+        sendInput("gas");
       }
       if (brake) {
-        sendInput("brake", null, null);
+        sendInput("brake");
       }
+      $.get("/pull", function(data) {
+        if (data && data != "NO_DATA") {
+          var json = JSON.parse(data);
+          if (json["VehicleName"]) {
+            $("#speed").html((json["VehicleSpeed"] / 1000 * 3600).toFixed() + " km/h" +
+             "&nbsp;&nbsp;&nbsp;&nbsp;" + (json["VehicleSpeed"] * 2.2369363).toFixed() + " mph");
+          }
+        }
+      });
     }
-    setTimeout(updateGasBrake, 20);
+    setTimeout(update, 20);
   }
 
   window.ondevicemotion = function(event) {
@@ -53,17 +68,24 @@
       var accelerationY = event.accelerationIncludingGravity.y;
       var accelerationZ = event.accelerationIncludingGravity.z;
 
-      var bias = -accelerationY / 30; // can use some smoothing
-      bias = Math.min(Math.max(bias, -1), 1);
-      $("#bias").text(bias);
-      var progressValue = 50 - bias*200;
-      $('#biasProgress').css('left', progressValue+'%');
-      //$("#biasValue").text(progressValue.toFixed(0) + "%");
-      sendInput(bias.toString(), null, null);
+      bias = Math.min(Math.max(accelerationY, -5.2), 5.2) / 5.2;
+      //$("#bias").text(accelerationY);
+      var progressValue = 50 + 50*bias;
+      $('#biasProgress').css('left', progressValue.toFixed(0)+'%');
+      sendInput(bias.toFixed(3), null, null);
     }
   }
 
-  function sendInput(arg, callback, errorCallback) {
+  function sendCommand(cmd, arg) {
+    $.ajax({
+      url: '/input',
+      type: 'post',
+      dataType: 'json',
+      success: null,
+      data: JSON.stringify({ "Cmd": cmd, "Arg" : arg }),
+    });
+  }
+  function sendInput(arg) {
     var stringified = JSON.stringify({ "Cmd": "extension", "Arg" : "extension-examples.ExtensionExamples.DrivingPlugin", "Args" : [arg] });
     $.ajax({
       url: '/input',
@@ -72,8 +94,8 @@
       success: null,
       data: stringified,
       timeout: 2000,
-      success: callback,
-      error: errorCallback,
+      success: null,
+      error: null,
     });
   }
   </script>
@@ -82,27 +104,35 @@
         position: relative;
         left: 50%;
         margin-left: -5%;
+        width: 10%;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Driving Plugin</h1>
-  </div>
-  <div class="container">
+    <h1>Mobile Driving Plugin</h1>
+    <h3 style="display:inline">by libertylocked</h3>
     <button type="button" class="btn btn-default" id="btnEnable">Enable</button>
     <button type="button" class="btn btn-default" id="btnDisable">Disable</button>
   </div>
   <div class="container">
-    <h3 id="bias"></h3>
+  </div>
+  <div class="container">
+    <!--h3 id="bias"></h3-->
+    <p>Tilt your phone to steer!</p>
     <div class="progress">
-      <div id="biasProgress" class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 10%;">
+      <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" id="biasProgress">
       </div>
    </div>
   </div>
   <div class="container">
-    <button type="button" class="btn btn-lg btn-default" id="btnBrake" style="float:left">Brake<br>.</button>
-    <button type="button" class="btn btn-lg btn-default" id="btnGas" style="float:right">Gas<br>.</button>
+    <button type="button" class="btn btn-default" id="btnRadioPrev">Radio Previous</button>
+    <button type="button" class="btn btn-default" id="btnRadioNext">Radio Next</button>
+    <span id="speed"></span>
+  </div>
+  <div class="container">
+    <button type="button" class="btn btn-lg btn-primary" id="btnBrake" style="float:left; width:30vw; position:fixed; bottom:0; left:0;">BRAKE<br>_</button>
+    <button type="button" class="btn btn-lg btn-primary" id="btnGas" style="float:right; width:30vw; position:fixed; bottom:0; right:0;">GAS<br>_</button>
     <h4 id="touchState"></h4>
   </div>
 </body>
