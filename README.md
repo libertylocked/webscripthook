@@ -68,7 +68,7 @@ POST /input
 
 #### Calling an extension through REST API
 - POST to /input with cmd "extension"
-- Arg needs to be "filename-without-dll.namespace.classname". e.g. extension-examples.ExampleExtensions.MyExtension
+- Arg needs to be "assemblyname.namespace.classname". e.g. extension-examples.ExampleExtensions.MyExtension
 - Args will be used to call the extension
 
 # Other notes
