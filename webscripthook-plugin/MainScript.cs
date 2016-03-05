@@ -53,7 +53,7 @@ namespace WebScriptHook
                 }
                 catch (Exception ex)
                 {
-                    UI.Notify("VStats func failed: " + input.Cmd + " " + input.Arg);
+                    //UI.Notify("VStats func failed: " + input.Cmd + " " + input.Arg);
                     Logger.Log(ex.ToString());
                 }
             }
