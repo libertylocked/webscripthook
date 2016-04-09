@@ -6,6 +6,7 @@ using System.Threading;
 using GTA;
 using Newtonsoft.Json;
 using WebScriptHook.Extensions;
+using WebScriptHook.Serialization;
 using WebSocketSharp;
 
 namespace WebScriptHook
@@ -20,6 +21,8 @@ namespace WebScriptHook
         ConcurrentQueue<KeyValuePair<string, object>> retQueue;
         Thread workerThread;
 
+        JsonSerializerSettings outSerializerSettings;
+
         public MainScript()
         {
             ParseConfig();
@@ -32,6 +35,12 @@ namespace WebScriptHook
 
             // Create Extension Manager instance
             ExtensionManager.CreateInstance();
+
+            // Serializer settings
+            outSerializerSettings = new JsonSerializerSettings
+            {
+                ContractResolver = new WritablePropertiesOnlyResolver()
+            };
         }
 
         private void OnTick(object sender, EventArgs e)
@@ -100,7 +109,7 @@ namespace WebScriptHook
                 {
                     if (!ws.IsAlive) ws.Connect();
                     // Send game data
-                    ws.Send(JsonConvert.SerializeObject(cacheData));
+                    ws.Send(JsonConvert.SerializeObject(cacheData, outSerializerSettings));
                     // Send return values
                     KeyValuePair<string, object> retPair;
                     while (retQueue.TryDequeue(out retPair))
