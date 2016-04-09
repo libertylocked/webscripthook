@@ -114,7 +114,7 @@ namespace WebScriptHook
                     KeyValuePair<string, object> retPair;
                     while (retQueue.TryDequeue(out retPair))
                     {
-                        ws.Send("RET:" + JsonConvert.SerializeObject(retPair));
+                        ws.Send("RET:" + JsonConvert.SerializeObject(retPair, outSerializerSettings));
                     }
                 }
                 catch
