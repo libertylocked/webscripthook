@@ -24,22 +24,19 @@ namespace WebScriptHook
             {
                 increment = -1;
             }
-            if (Game.RadioStation == RadioStation.LosSantosRockRadio && increment == -1)
+
+            int radioIndex = Function.Call<int>(Hash.GET_PLAYER_RADIO_STATION_INDEX);
+            if (increment == -1 && radioIndex == 0)
             {
-                // TODO: Fix tuning to self radio
+                // Hack for tuning backwards from LS Rock Radio
                 Game.RadioStation = RadioStation.VinewoodBoulevardRadio;
-            }
-            else if (Game.RadioStation == RadioStation.SelfRadio && increment == 1)
-            {
-                Game.RadioStation = RadioStation.LosSantosRockRadio;
             }
             else
             {
-                var radioStations = Enum.GetValues(typeof(RadioStation));
-                var newIndex = (Array.IndexOf(radioStations, Game.RadioStation) + increment) % radioStations.Length;
-                var newStation = (RadioStation)(radioStations.GetValue(newIndex));
-                Game.RadioStation = newStation;
+                // Pretty sure this native mods the index by total stations, so it won't be out of range
+                Function.Call(Hash.SET_RADIO_TO_STATION_INDEX, radioIndex + increment);
             }
+
             return null;
         }
 
