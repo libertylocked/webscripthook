@@ -13,7 +13,7 @@ cd webscripthook-server
 copy ..\webscripthook-plugin\WebScriptHook.ini .\WebScriptHook.ini
 go build
 cd ..
-robocopy .\webscripthook-server\ .\Release\WebScriptHook /E /xf *.go build.bat
+robocopy .\webscripthook-server\ .\Release\WebScriptHook /E /xf *.go .vscode build.bat
 rem Copy license and readme
 copy README.md .\Release\README.txt
 copy LICENSE .\Release\LICENSE.txt
