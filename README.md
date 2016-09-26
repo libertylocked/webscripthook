@@ -1,10 +1,17 @@
 # WebScriptHook plugin + server
 [![Build status](https://ci.appveyor.com/api/projects/status/u0q7xo205ls01qmq?svg=true)](https://ci.appveyor.com/project/LibertyLocked/webscripthook)
 
-Created by libertylocked
-
-Providing client-side scripts with a REST API for GTAV. Includes server and plugin.
+A platform that allows interaction with a running instance of GTAV through a REST API. Extendable through extensions! Includes server and game-side plugin.
 Inspired by [ETS2 Telemetry Server](https://github.com/Funbit/ets2-telemetry-server)
+
+#### Features
+- Second-screen experiences for GTAV through a web interface
+- Fetching real-time game statistics in JSON format with a GET request
+- Calling GTAV script native functions with POST requests
+- Web server included! Drop your HTML and CSS and JavaScript and you are good to go
+- Extension support allows developers to create extensions to handle more request types. Extensions are stateful and can be ticked with the game
+- You can easily port an existing ScriptHook V .NET script to a WebScriptHook extension
+- Includes a "Drive Cars With Your Phone" example extension ([frontend](/webscripthook-server/apps/driving/index.html) and [backend](/webscripthook-extensions/DrivingPlugin.cs))
 
 # Installation
 #### Requirements
