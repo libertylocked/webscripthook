@@ -9,7 +9,7 @@ This project includes some example extensions for WebScriptHook
 #### DrivingPlugin
 - A super advanced demo
 - This plugin allows the user to drive with their phone using gyroscope and buttons
-- See [/apps/driving/index.html](https://github.com/LibertyLocked/webscripthook/blob/master/webscripthook-server/apps/driving/index.html) for the front-end of this extension
+- See [/apps/driving/index.html](/webscripthook-server/apps/driving/index.html) for the front-end of this extension
 
 #### ExceptionPlugin
 - Throws an exception when ["throw"] is received
