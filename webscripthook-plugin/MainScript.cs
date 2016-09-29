@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
+using System.Timers;
 using GTA;
 using Newtonsoft.Json;
 using WebScriptHook.Extensions;
@@ -14,12 +14,14 @@ namespace WebScriptHook
     class MainScript : Script
     {
         private string url;
-        private int sleepTime;
+        private int workerInterval;
+
+        private volatile bool workerExecuting = false;
+        WebSocket ws;
 
         GameData cacheData;
         ConcurrentQueue<WebInput> inputQueue;
         ConcurrentQueue<KeyValuePair<string, object>> retQueue;
-        Thread workerThread;
 
         JsonSerializerSettings outSerializerSettings;
 
@@ -31,6 +33,9 @@ namespace WebScriptHook
             this.retQueue = new ConcurrentQueue<KeyValuePair<string, object>>();
             this.Tick += OnTick;
 
+            // Set up network worker, which exchanges data between plugin and server
+            ws = new WebSocket(url);
+            ws.OnMessage += WS_OnMessage;
             CreateWorkerThread();
 
             // Create Extension Manager instance
@@ -62,7 +67,6 @@ namespace WebScriptHook
                 }
                 catch (Exception ex)
                 {
-                    //UI.Notify("VStats func failed: " + input.Cmd + " " + input.Arg);
                     Logger.Log(ex.ToString());
                 }
             }
@@ -87,41 +91,48 @@ namespace WebScriptHook
             int interval = settings.GetValue("Core", "INTERVAL", 10);
             Logger.Enable = settings.GetValue("Core", "LOGGING", false);
 
-            //url = "http://localhost:" + port + "/push";
             url = "ws://" + host + ":" + port + "/pushws";
-            sleepTime = interval;
+            workerInterval = interval;
         }
 
+        // Worker exchanges data between plugin and server
         private void CreateWorkerThread()
         {
-            workerThread = new Thread(ThreadProc_PostJSON);
-            workerThread.Start();
+            System.Timers.Timer wokerTimer = new System.Timers.Timer(workerInterval);
+            wokerTimer.Elapsed += Worker_OnTick;
+            wokerTimer.Start();
         }
 
-        private void ThreadProc_PostJSON()
+        private void Worker_OnTick(object sender, ElapsedEventArgs e)
         {
-            WebSocket ws = new WebSocket(url);
-            ws.OnMessage += WS_OnMessage;
+            if (workerExecuting) return;
+            workerExecuting = true;
 
-            while (true)
+            try
             {
-                try
+                // Check if connection is alive. If not, attempt to connect to server
+                // WS doesn't throw exceptions when connection fails or unconnected
+                if (!ws.IsAlive) ws.Connect();
+                // Send game stats data (updates the stats cached on server)
+                ws.Send(JsonConvert.SerializeObject(cacheData, outSerializerSettings));
+                // Send return values
+                KeyValuePair<string, object> retPair;
+                while (retQueue.TryDequeue(out retPair))
                 {
-                    if (!ws.IsAlive) ws.Connect();
-                    // Send game data
-                    ws.Send(JsonConvert.SerializeObject(cacheData, outSerializerSettings));
-                    // Send return values
-                    KeyValuePair<string, object> retPair;
-                    while (retQueue.TryDequeue(out retPair))
-                    {
-                        ws.Send("RET:" + JsonConvert.SerializeObject(retPair, outSerializerSettings));
-                    }
+                    // Serialize the object to JSON then send back to server.
+                    // "RET:" is the "header" for return values
+                    // Word of warning: If some extension attempts to send an object that cannot be seralized, 
+                    // this iteration of worker update will be terminated. Whatever is left on the queue may be unsent.
+                    ws.Send("RET:" + JsonConvert.SerializeObject(retPair, outSerializerSettings));
                 }
-                catch
-                {
-                    Thread.Sleep(100);
-                }
-                Thread.Sleep(sleepTime);
+            }
+            catch (Exception exc)
+            {
+                Logger.Log(exc.ToString());
+            }
+            finally
+            {
+                workerExecuting = false;
             }
         }
 
