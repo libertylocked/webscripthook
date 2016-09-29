@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="/static/bootstrap/css/bootstrap-theme.min.css">
   <script src="/static/jquery-1.11.3.min.js"></script>
   <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/static/webscripthook.js"></script>
   <script>
   var enable = false;
   var gas = false;
@@ -14,11 +15,11 @@
   $(document).ready(function(){
     $("#btnEnable").click(function() {
       enable = true;
-      sendInput("on");
+      sendToPlugin("on");
     });
     $("#btnDisable").click(function() {
       enable = false;
-      sendInput("off");
+      sendToPlugin("off");
     });
     $("#btnBrake").bind("touchstart", function(e){
       brake = true;
@@ -33,10 +34,10 @@
       gas = false;
     });
     $("#btnRadioPrev").click(function() {
-      sendCommand("radio", "-1");
+      sendInput("radio", "-1");
     });
     $("#btnRadioNext").click(function() {
-      sendCommand("radio", "1");
+      sendInput("radio", "1");
     });
     update();
   });
@@ -44,10 +45,10 @@
   function update() {
     if (enable) {
       if (gas) {
-        sendInput("gas");
+        sendToPlugin("gas");
       }
       if (brake) {
-        sendInput("brake");
+        sendToPlugin("brake");
       }
       $.get("/pull", function(data) {
         if (data && data != "NO_DATA") {
@@ -72,31 +73,19 @@
       //$("#bias").text(accelerationY);
       var progressValue = 50 + 50*bias;
       $('#biasProgress').css('left', progressValue.toFixed(0)+'%');
-      sendInput(bias.toFixed(3), null, null);
+      sendToPlugin(bias.toFixed(3), null, null);
     }
   }
 
-  function sendCommand(cmd, arg) {
-    $.ajax({
-      url: '/input',
-      type: 'post',
-      dataType: 'json',
-      success: null,
-      data: JSON.stringify({ "Cmd": cmd, "Arg" : arg }),
-    });
-  }
-  function sendInput(arg) {
-    var stringified = JSON.stringify({ "Cmd": "extension", "Arg" : "extension-examples.ExtensionExamples.DrivingPlugin", "Args" : [arg] });
-    $.ajax({
-      url: '/input',
-      type: 'post',
-      dataType: 'json',
-      success: null,
-      data: stringified,
-      timeout: 2000,
-      success: null,
-      error: null,
-    });
+  function sendToPlugin(arg) {
+    /*
+      WebScriptHook input requests follow this format: { "Cmd", "Arg", "Args" }. 
+      When sending requests to a specific extension, "Cmd" should be the extension dispatcher, "extension"
+      "Arg" is the argument sent to the extension dispatcher, in this case "extension-examples.ExtensionExamples.DrivingPlugin"
+      "Args" is an array of arguments sent to the plugin. 
+      We put the only argument in args array, which could be "on", "off", "gas", "break", or a float (the steering bias).
+    */
+    sendInput("extension", "extension-examples.ExtensionExamples.DrivingPlugin", [arg]);
   }
   </script>
   <style>
