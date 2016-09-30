@@ -9,13 +9,23 @@ namespace WebScriptHook
 {
     class Logger
     {
-        public static bool Enable = false;
+        public static string Location
+        {
+            get;
+            set;
+        }
+
+        public static bool Enable
+        {
+            get;
+            set;
+        }
 
         public static void Log(object message)
         {
             if (Enable)
             {
-                File.AppendAllText(@".\scripts\WebScriptHook.log", DateTime.Now + " : " + message + Environment.NewLine);
+                File.AppendAllText(Location, DateTime.Now + " : " + message + Environment.NewLine);
             }
         }
     }
