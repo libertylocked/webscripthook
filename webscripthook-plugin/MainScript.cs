@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
-using System.Timers;
+using System.Threading;
 using GTA;
 using Newtonsoft.Json;
 using WebScriptHook.Extensions;
@@ -14,9 +14,10 @@ namespace WebScriptHook
     class MainScript : Script
     {
         private string url;
-        private int workerInterval;
+        //private int workerInterval;
 
-        private volatile bool workerExecuting = false;
+        static volatile bool workerExecuting = false;
+        static AutoResetEvent networkWaitHandle = new AutoResetEvent(false);
         WebSocket ws;
 
         GameData cacheData;
@@ -32,6 +33,7 @@ namespace WebScriptHook
             this.inputQueue = new ConcurrentQueue<WebInput>();
             this.retQueue = new ConcurrentQueue<KeyValuePair<string, object>>();
             this.Tick += OnTick;
+            this.Tick += delegate { networkWaitHandle.Set(); }; // Signal network thread when a frame is ticked
 
             // Set up network worker, which exchanges data between plugin and server
             ws = new WebSocket(url);
@@ -90,49 +92,54 @@ namespace WebScriptHook
             string port = settings.GetValue("Core", "PORT", "25555");
             int interval = settings.GetValue("Core", "INTERVAL", 10);
             Logger.Enable = settings.GetValue("Core", "LOGGING", false);
+            Logger.Location = @".\scripts\WebScriptHook.log";
 
             url = "ws://" + host + ":" + port + "/pushws";
-            workerInterval = interval;
+            //workerInterval = interval;
         }
 
         // Worker exchanges data between plugin and server
         private void CreateWorkerThread()
         {
-            System.Timers.Timer wokerTimer = new System.Timers.Timer(workerInterval);
-            wokerTimer.Elapsed += Worker_OnTick;
-            wokerTimer.Start();
+            Thread networkThread = new Thread(Worker_OnTick);
+            networkThread.IsBackground = true;
+            networkThread.Start();
         }
 
-        private void Worker_OnTick(object sender, ElapsedEventArgs e)
+        private void Worker_OnTick()
         {
-            if (workerExecuting) return;
-            workerExecuting = true;
+            while (true)
+            {
+                // Wait until a tick happens in the game
+                // Because otherwise we'll waste CPU sending the same GameData to the server
+                networkWaitHandle.WaitOne();
 
-            try
-            {
-                // Check if connection is alive. If not, attempt to connect to server
-                // WS doesn't throw exceptions when connection fails or unconnected
-                if (!ws.IsAlive) ws.Connect();
-                // Send game stats data (updates the stats cached on server)
-                ws.Send(JsonConvert.SerializeObject(cacheData, outSerializerSettings));
-                // Send return values
-                KeyValuePair<string, object> retPair;
-                while (retQueue.TryDequeue(out retPair))
+                try
                 {
-                    // Serialize the object to JSON then send back to server.
-                    // "RET:" is the "header" for return values
-                    // Word of warning: If some extension attempts to send an object that cannot be seralized, 
-                    // this iteration of worker update will be terminated. Whatever is left on the queue may be unsent.
-                    ws.Send("RET:" + JsonConvert.SerializeObject(retPair, outSerializerSettings));
+                    // Check if connection is alive. If not, attempt to connect to server
+                    // WS doesn't throw exceptions when connection fails or unconnected
+                    if (!ws.IsAlive) ws.Connect();
+                    // Send game stats data (updates the stats cached on server)
+                    ws.Send(JsonConvert.SerializeObject(cacheData, outSerializerSettings));
+                    // Send return values
+                    KeyValuePair<string, object> retPair;
+                    while (retQueue.TryDequeue(out retPair))
+                    {
+                        // Serialize the object to JSON then send back to server.
+                        // "RET:" is the "header" for return values
+                        // Word of warning: If some extension attempts to send an object that cannot be seralized, 
+                        // this iteration of worker update will be terminated. Whatever is left on the queue may be unsent.
+                        ws.Send("RET:" + JsonConvert.SerializeObject(retPair, outSerializerSettings));
+                    }
                 }
-            }
-            catch (Exception exc)
-            {
-                Logger.Log(exc.ToString());
-            }
-            finally
-            {
-                workerExecuting = false;
+                catch (Exception exc)
+                {
+                    Logger.Log(exc.ToString());
+                }
+                finally
+                {
+                    //workerExecuting = false;
+                }
             }
         }
 
