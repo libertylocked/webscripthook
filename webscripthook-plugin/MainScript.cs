@@ -14,9 +14,7 @@ namespace WebScriptHook
     class MainScript : Script
     {
         private string url;
-        //private int workerInterval;
 
-        static volatile bool workerExecuting = false;
         static AutoResetEvent networkWaitHandle = new AutoResetEvent(false);
         WebSocket ws;
 
@@ -95,7 +93,6 @@ namespace WebScriptHook
             Logger.Location = @".\scripts\WebScriptHook.log";
 
             url = "ws://" + host + ":" + port + "/pushws";
-            //workerInterval = interval;
         }
 
         // Worker exchanges data between plugin and server
@@ -135,10 +132,6 @@ namespace WebScriptHook
                 catch (Exception exc)
                 {
                     Logger.Log(exc.ToString());
-                }
-                finally
-                {
-                    //workerExecuting = false;
                 }
             }
         }
