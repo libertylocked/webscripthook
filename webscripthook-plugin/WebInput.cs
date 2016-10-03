@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using GTA;
 using GTA.Math;
 using GTA.Native;
+using Newtonsoft.Json;
 
 namespace WebScriptHook
 {
@@ -16,7 +17,16 @@ namespace WebScriptHook
         public string Cmd { get; set; } 
         public string Arg { get; set; }
         public object[] Args { get; set; }
-        public string UID { get; set; }
+        public string UID { get; private set; }
+
+        [JsonConstructor]
+        public WebInput(string Cmd, string Arg, object[] Args, string UID)
+        {
+            this.Cmd = Cmd;
+            this.Arg = Arg;
+            this.Args = Args;
+            this.UID = UID;
+        }
 
         public object Execute()
         {
