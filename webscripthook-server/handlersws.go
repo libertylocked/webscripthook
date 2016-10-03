@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"sync"
 
 	"github.com/gorilla/websocket"
 	"github.com/satori/go.uuid"
@@ -20,7 +21,13 @@ var upgrader = websocket.Upgrader{
 	WriteBufferSize: 1024,
 }
 
+var pluginMutex = &sync.Mutex{}
+
 func handlePluginWS(w http.ResponseWriter, r *http.Request) {
+	pluginMutex.Lock()
+	defer func() {
+		pluginMutex.Unlock()
+	}()
 	if pluginConnected {
 		// Refuse this connection
 		http.Error(w, http.StatusText(401), 401)
