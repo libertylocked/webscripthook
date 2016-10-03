@@ -81,6 +81,7 @@ func handlePostInput(w http.ResponseWriter, r *http.Request) {
 	default:
 		// Fails to POST the input because chan is full
 		log.Println("POST: Channel full. Discarding value")
+		http.Error(w, http.StatusText(429), 249)
 	}
 }
 
